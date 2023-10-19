@@ -1,0 +1,24 @@
+- content_for :title, "Order ##{@order.id}"
+- content_for :heading, "Order ##{@order.id}"
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a{href: orders_path}= fa_icon 'cubes', text: 'Orders'
+  %li.breadcrumb-item.active
+    Order ##{@order.id}
+
+%h3.px-1.text-break
+  Order #{@order.labelize}
+  - if policy(@order).edit?
+    %small
+      %a{href: edit_order_path(@order)} Edit
+%br
+.row.mb-2
+  .col-sm-6.col-lg-5.offset-lg-1
+    = render 'current_state'
+    = render 'details'
+    = render 'watchlist'
+  .col-sm-6.col-lg-5
+    = render 'customer'
+    = render 'shipping'
+
+= render 'states/list'

@@ -1,0 +1,18 @@
+= render layout: 'emails/p' do
+  = "Hello #{@user.name},"
+= render layout: 'emails/p' do
+  You now have an IDrive Express account.
+= render layout: 'emails/p' do
+  To finish creating your account:
+%ol
+  %li
+    = render layout: 'emails/a', locals: {href: edit_password_url(@user.reset_password_token)} do
+      Set a password
+    for your account.
+  %li
+    = render layout: 'emails/a', locals: {href: login_url} do
+      Login to your account
+    using your email and password.
+= render layout: 'emails/p' do
+  Once logged in, you can start managing orders as well as manage your account
+  details.

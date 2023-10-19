@@ -1,0 +1,46 @@
+- content_for :title, "Users"
+- content_for :heading, 'Users'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item.active
+    = fa_icon 'group'
+    Users
+
+-# New User
+.btn-group.mb-1{role: 'group'}
+  %button.btn.btn-secondary{data: {toggle: 'modal', target: "##{dom_id @user, 'new-modal'}"}, type: 'button'}
+    = fa_icon 'plus'
+    New User
+= render 'modal_form', action: 'new', modal: true
+
+.table-responsive
+  %table#users.table
+    %thead
+      %tr
+        %th Name
+        %th Email
+        %th Roles
+        %th Status
+    %tbody
+      - for user in @users
+        %tr
+          %td
+            - if policy(user).show?
+              %a{href: user_path(user)}= user.name
+            - else
+              = user.name
+            - if policy(user).update?
+              %small
+                %a{href: edit_user_path(user)} Edit
+          %td= mail_to(user.email)
+          %td
+            - if user.roles.empty?
+              %span.text-muted None
+            - else
+              - for role in user.roles
+                %span.tag.tag-default.cursor-help{title: role.description}= role.name
+
+          %td
+            - if user.disabled_at.nil?
+              %span.tag.tag-default.cursor-help Enabled
+            - else
+              %span.tag.tag-default.cursor-help Disabled

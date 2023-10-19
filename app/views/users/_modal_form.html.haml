@@ -1,0 +1,12 @@
+.modal.fade{id: dom_id(@user, "#{action}-modal"), aria_labelledby: '#modal-form-label', role: "dialog", tabindex: "-1"}
+  .modal-dialog{role: "document"}
+    .modal-content
+      .modal-header
+        %button.close{type: "button", data: {dismiss: "modal"}, aria_label: "Close"}
+          %span{aria_hidden: "true"}
+            %i.fa.fa-fw.fa-times
+          %span.sr-only Close
+        %h4#modal-form-label.modal-title
+          = action.titleize
+          user
+      .modal-body= render 'form', modal: true

@@ -1,0 +1,76 @@
+.card
+  .card-header
+    %b.pr-1= yield :heading
+    .btn-group
+      %button.btn.btn-sm.btn-secondary.dropdown-toggle{type: 'button', data: {toggle: 'dropdown'}, aria: {haspopup: 'true', expanded: 'false'}}
+        CSV
+      .dropdown-menu
+        - if @orders.size < 1 or @orders.total_entries > OrdersController::MAX_CSV_RECORDS
+          - title = @orders.total_entries > OrdersController::MAX_CSV_RECORDS ? "The system cannot process more than #{OrdersController::MAX_CSV_RECORDS} records as CSV. Please filter your search and try again." : nil
+          %span.dropdown-item.disabled{title: title} View as CSV
+          %span.dropdown-item.disabled{title: title} Download as CSV
+        - else
+          %a.dropdown-item{href: send(@orders_path_sym, format: :csv, q: params[:q])} View as CSV
+          %a.dropdown-item{href: send(@orders_path_sym, format: :csv, q: params[:q], download: true)} Download as CSV
+        - if policy(:order).bulk_update?
+          .dropdown-divider
+          %a.dropdown-item{href: csv_files_path} Update orders from CSV
+    .btn-group{style: 'position: absolute; right: 0; margin-right: 15px;'}
+      %button.btn.btn-sm.btn-secondary.dropdown-toggle{type: 'button', data: {toggle: 'dropdown'}, aria: {haspopup: 'true', expanded: 'false'}}
+        Sort By
+      .dropdown-menu
+        %a.dropdown-item{href: send(@orders_path_sym), class: ('active' unless params[:q].present?)}
+          Creation Date
+        %a.dropdown-item{href: send(@orders_path_sym, q: 'day_count:desc'), class: ('active' if params[:q] == 'day_count:desc')}
+          Day-count
+        %a.dropdown-item{href: send(@orders_path_sym, q: 'order_updated:recently'), class: ('active' if params[:q] == 'order_updated:recently')}
+          Most Recently Updated
+        %a.dropdown-item{href: send(@orders_path_sym, q: 'priority:high'), class: ('active' if params[:q] == 'priority:high')}
+          Priority
+  %ul.list-group.list-group-flush
+    - if @orders.present?
+      - @orders.each do |order|
+        %li.list-group-item{class: "#{order_row_class(order)} #{day_count_stale_class(order)}", data: {order_id: order.id}}
+          .row
+            .col-xs-2
+              = render 'status_icons', order: order
+            .col-xs-10.col-sm-8
+              %h6.text-break
+                %a{href: order_path(order)}
+                  %strong= order.labelize
+              .text-muted
+                - if order.percentage == 100 and order.completed_at
+                  completed
+                  = render 'dates/friendly_date', date_time: order.completed_at, in_words: true
+                - else
+                  updated
+                  = render 'dates/friendly_date', date_time: order.updated_at, in_words: true
+                = "#{order.last_updating_user.present? ? " by #{order.last_updating_user}" : ''}, "
+                created
+                = render 'dates/friendly_date', date_time: order.created_at, in_words: true
+              %div
+                #{order.percentage}% completed - "#{order.label}"
+              -# searches
+              = render 'search_highlight', query: params[:q], order: order
+
+            .hidden-xs-down.col-sm-2.text-xs-right
+              %progress.progress.orders-progress{value: order.percentage, max: 100, title: "#{order.percentage}%"}
+    - else
+      %li.list-group-item
+        %p
+          No orders found. Maybe try
+          = link_to 'all orders', orders_path
+          instead?
+        %p.mb-0
+          Want to search more effectively? Learn
+          %a{href: help_path('searching-orders')} how to search orders
+          here.
+
+.text-xs-center
+  = will_paginate @orders
+%p.text-xs-center
+  = page_entries_info @orders
+  in
+  = yield :heading
+
+= render 'status_icons_legend'

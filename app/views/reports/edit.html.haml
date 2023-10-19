@@ -1,0 +1,11 @@
+-# reports/edit.html.haml
+
+- content_for :title, 'Edit report'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a{href: reports_path}= fa_icon 'area-chart', text: 'Reports'
+  %li.breadcrumb-item
+    %a{href: report_path(@report)}= @report.name
+  %li.breadcrumb-item.active= yield :title
+
+= render 'form'

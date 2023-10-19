@@ -1,0 +1,36 @@
+-# reports/index.html.haml
+
+- content_for :title, 'Reports'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item.active
+    = fa_icon 'area-chart'
+    = yield :title
+
+.btn-group.mb-1{role: 'group'}
+  %a.btn.btn-secondary{href: new_report_path}
+    = fa_icon 'plus'
+    New report
+
+%ul.list-group.mb-1
+  - if !@reports.blank?
+    - @reports.each do |report|
+      %li.list-group-item
+        %h5.text-break
+          %a{href: report_path(report)}= report.name
+          - if report.frequency.present?
+            %span.tag.tag-default= report.frequency
+          %small.text-muted
+            = "created #{time_ago_in_words(report.created_at)} ago,"
+            = "updated #{time_ago_in_words(report.updated_at)} ago"
+        .text-ellipsis= report.description
+
+  - else
+    %li.list-group-item.text-xs-center
+      No reports...yet. Why not
+      = succeed '?' do
+        %a{href: new_report_path} create a new one
+
+.text-xs-center
+  = will_paginate @reports
+%p.text-xs-center
+  = page_entries_info @reports

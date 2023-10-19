@@ -1,0 +1,14 @@
+- content_for :title, 'CSV processing'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a{href: csv_files_path}= fa_icon 'file-excel-o', text: 'Update orders from CSV'
+  %li.breadcrumb-item.active= yield(:title)
+
+.col-xs-12.col-lg-8.offset-lg-2.mb-1
+  %h1= yield(:title)
+  %p
+    Your CSV has been uploaded and is being processed. Please be patient
+    until it completes.
+  %p.text-xs-center
+    = fa_icon 'circle-o-notch', class: 'fa-5x fa-spin', id: 'js-csv-files-processing'
+    %span.sr-only Processing...

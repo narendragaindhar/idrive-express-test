@@ -1,0 +1,591 @@
+model_class: State
+records:
+  -
+    core:
+      key: idrive_bmr_upload_order_created
+    update:
+      active: true
+      is_drive_event: false
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: true
+    create:
+      label: Order created
+      description: Your order has been received. We'll start working on it
+        right away!
+      percentage: 14
+  -
+    core:
+      key: idrive_bmr_upload_on_hold_pre_shipping
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: On hold - not shipped
+      description: An order placed on hold before it was shipped. For orders
+        that may have been made in mistake, or to investigate any potential red
+        flags.
+      percentage: 16
+  -
+    core:
+      key: idrive_bmr_upload_international_shipping
+    update:
+      active: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: true
+    create:
+      label: International shipping fee
+      description: >-
+        Thank you for your your interest in using the Express service. Before
+        we process your order, since this is shipping internationally, we
+        wanted to make sure you were aware of the additional shipping costs of
+        the order. In your location, the expected cost for this is $XX.XX USD.
+        Please be advised that this only covers the cost of shipping the drive
+        to you, and not the cost of return shipping.
+
+
+        The charge for shipping would be applied to your IDrive account, on the
+        same card on file. Please reply to this email confirming you accept
+        these charges and we will process your request. If you decline, we will
+        cancel your Express order, but your IDrive account will be unaffected.
+        If you have any questions, please let us know by emailing us at
+        support@idrive.com.
+
+
+        Thanks for using IDrive!
+      percentage: 16
+  -
+    core:
+      key: idrive_bmr_upload_charged_international_shipping
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Charged international shipping fee
+      description: International shipping fee approved. Charging on ticket XXXX.
+      percentage: 18
+  -
+    core:
+      key: idrive_bmr_upload_drive_formatted
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Drive formatted
+      description: Processed BTRFS encrypted formatting for drive.
+      percentage: 25
+  -
+    core:
+      key: idrive_bmr_upload_shipping_label_generated
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Shipping label generated
+      description: >-
+        USPS sent tracking number: XXXX
+
+
+        USPS return tracking number: XXXX
+      percentage: 28
+  -
+    core:
+      key: idrive_bmr_upload_order_shipped
+    update:
+      active: true
+      is_drive_event: true
+      leaves_us: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: true
+    create:
+      label: Drive shipped
+      description: >-
+        Your drive has been shipped! Your USPS tracking number is XXXX. Please
+        allow 2-3 days for delivery.
+      percentage: 42
+  -
+    core:
+      key: idrive_bmr_upload_software_update_required
+    update:
+      active: true
+      is_out_of_our_hands: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: true
+    create:
+      label: BMR software update required
+      description: >-
+        Your BMR device requires a software update before it will be able to
+        perform an Express upload. Please reply to this email or call IDrive
+        support at 855-815-8706 to request an update.
+      percentage: 43
+  -
+    core:
+      key: idrive_bmr_upload_status_update_external
+    update:
+      active: true
+      is_out_of_our_hands: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Status update
+      description: >-
+        Drive out of our possession.
+
+
+        Can be used for internal or external communication between team or the
+        customer to update the status of the order after it has been shipped.
+      percentage: 44
+  -
+    core:
+      key: idrive_bmr_upload_software_updated
+    update:
+      active: true
+      is_out_of_our_hands: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: BMR software updated
+      description: BMR support assisted the user in updating the BMR firmware
+        to allow for Express cloud upload.
+      percentage: 45
+  -
+    core:
+      key: idrive_bmr_upload_return_delayed
+    update:
+      active: true
+      is_drive_event: true
+      is_out_of_our_hands: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: true
+    create:
+      label: Drive return delayed
+      description: It has been a while since your order has shipped. To avoid
+        being charged for the drive, please ship it back to us as soon as
+        possible.
+      percentage: 49
+  -
+    core:
+      key: idrive_bmr_upload_return_delayed_final
+    update:
+      active: true
+      is_drive_event: true
+      is_out_of_our_hands: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: true
+    create:
+      label: Drive return delayed - final notice
+      description: It has been a while since your order has shipped. To avoid
+        being charged for the drive, please ship it back to us as soon as
+        possible.
+      percentage: 49
+  -
+    core:
+      key: idrive_bmr_upload_returned_to_office
+    update:
+      active: true
+      is_drive_event: true
+      leaves_us: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Drive returned to office
+      description: Drive returned to office. Sending to datacenter.
+      percentage: 52
+  -
+    core:
+      key: idrive_bmr_upload_drive_received
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: true
+    create:
+      label: Drive received at datacenter
+      description: We have received your IDrive BMR Express drive. Your data
+        will be uploaded soon!
+      percentage: 56
+  -
+    core:
+      key: idrive_bmr_upload_server_full
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Server full
+      description: No available USB ports in the server.
+      percentage: 60
+  -
+    core:
+      key: idrive_bmr_upload_incorrect_account
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Incorrect account/server
+      description: The drive was plugged into the incorrect server or is
+        backing up an account that is not on the current server.
+      percentage: 60
+  -
+    core:
+      key: idrive_bmr_upload_status_update
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Status update
+      description: >-
+        Drive in our possession.
+
+
+        Can be used for internal or external communication between team or the
+        customer to update the status of the order after it has been shipped.
+      percentage: 60
+  -
+    core:
+      key: idrive_bmr_upload_upload_delay
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: true
+    create:
+      label: Express upload delay
+      description: There is a problem with the BMR Express drive. We are
+        currently working on resolving the issue.
+      percentage: 60
+  -
+    core:
+      key: idrive_bmr_upload_drive_not_detected
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Drive not detected
+      description: The Express drive is unable to be seen or mounted by the OS.
+      percentage: 60
+  -
+    core:
+      key: idrive_bmr_upload_moving_account
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Moving account
+      description: User account data is being transferred to server XXXX.
+      percentage: 60
+  -
+    core:
+      key: idrive_bmr_upload_waiting_on_upload
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Waiting on upload
+      description: Another upload is in progress for order XXXX. Data upload
+        will begin once it is done.
+      percentage: 60
+  -
+    core:
+      key: idrive_bmr_upload_drive_mounted
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Drive mounted on server
+      description: Your drive has been attached to our servers. Your upload
+        will start soon.
+      percentage: 70
+  -
+    core:
+      key: idrive_bmr_upload_upload_started
+    update:
+      active: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: true
+    create:
+      label: Upload started
+      description: Your data upload has begun.
+      percentage: 84
+  -
+    core:
+      key: idrive_bmr_upload_order_upload_restarted
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Upload restarted
+      description: Your data upload is still ongoing.
+      percentage: 84
+  -
+    core:
+      key: idrive_bmr_upload_upload_in_progress
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Upload still in progress
+      description: Your data upload is still in progress.
+      percentage: 86
+  -
+    core:
+      key: idrive_bmr_upload_replacement_fee
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Charging replacement fee
+      description: Charging user replacement fee for unreturned hard drive.
+        Ticket number XXXX.
+      percentage: 95
+  -
+    core:
+      key: idrive_bmr_upload_replacement_fee_failure
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Unable to charge replacement fee
+      description: Charging user replacement fee for unreturned hard drive.
+        Ticket number XXXX.
+      percentage: 95
+  -
+    core:
+      key: idrive_bmr_upload_claim_filed
+    update:
+      active: true
+      is_drive_event: true
+      is_out_of_our_hands: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      public_by_default: false
+    create:
+      label: Shipping claim filed
+      description: Notes for filing a claim for a drive lost by USPS.
+      percentage: 95
+  -
+    core:
+      key: idrive_bmr_upload_order_completed
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Upload completed
+      description: >-
+        Your IDrive BMR Express Upload order is complete. You can now access
+        your data in your account!
+  -
+    core:
+      key: idrive_bmr_upload_drive_never_returned
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Drive never returned
+      description: You have been charged due to failure to return your IDrive
+        BMR Express drive back to us.
+  -
+    core:
+      key: idrive_bmr_upload_order_cancelled
+    update:
+      active: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Order cancelled
+      description: Your order has been cancelled.
+  -
+    core:
+      key: idrive_bmr_upload_order_cancelled_undeliverable
+    update:
+      active: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Order cancelled - unable to deliver
+      description: >-
+        Your order has been cancelled because USPS was unable to deliver the
+        Express drive package. It has been returned to our office.
+
+
+        If you have any questions please utilize our 24-hour online chat
+        support (https://www.idrive.com/support.htm) or call our customer
+        support team at 855-815-8706, 6AM - 6PM PST, Monday - Friday.
+  -
+    core:
+      key: idrive_bmr_upload_cancelled_hardware_failure
+    update:
+      active: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Unable to upload - hardware failure
+      description: >-
+        Your IDrive Express has arrived back at our office safely! However, we
+        have noticed that the drive that we have received from you appears to
+        have some kind of physical damage or hardware failure. If you would
+        still like to utilize the service you will need to create a new IDrive
+        BMR Express order on our website.
+
+
+        If you have any questions please utilize our 24-hour online chat
+        support (https://www.idrive.com/support.htm) or call us at
+        855-815-8706, 6AM-6PM PST, Monday through Friday.
+  -
+    core:
+      key: idrive_bmr_upload_cancelled_empty_drive
+    update:
+      active: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Unable to upload - empty drive
+      description: >-
+        Your IDrive Express has arrived back at our office safely! However, we
+        have noticed that the drive that we have received from you has no data
+        on it. Please reply to this email to let us know as soon as possible if
+        this was your intention or not. If you would still like to utilize the
+        service you will need to create a new IDrive BMR Express order on our
+        website.
+
+
+        If you have any questions please utilize our 24-hour online chat
+        support (https://www.idrive.com/support.htm) or call us at
+        855-815-8706, 6AM-6PM PST, Monday through Friday.
+  -
+    core:
+      key: idrive_bmr_upload_cancelled_software_unused
+    update:
+      active: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_upload
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Unable to upload - software not used
+      description: >-
+        Your IDrive Express has arrived back at our office safely! However, we
+        have noticed that the drive that we have received from you didn't use
+        the software provided to upload files. Because of this we are unable
+        move the data on the drive onto the account. Please reply to this email
+        to let us know as soon as possible if this was your intention or not.
+        If you would still like to utilize the service you will need to create
+        a new IDrive BMR Express order on our website.
+
+
+        Please be sure to use the software during your backup process, If you'd
+        like, our trained support team can walk you through the process.
+
+
+        If you have any questions please utilize our 24-hour online chat
+        support (https://www.idrive.com/support.htm) or call us at
+        855-815-8706, 6AM-6PM PST, Monday through Friday.
+  -
+    core:
+      key: idrive_bmr_upload_cancelled_usps_claim
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_upload
+      percentage: 100
+      public_by_default: false
+    create:
+      label: USPS claim closed
+      description: USPS has settled our claim due to a lost drive.

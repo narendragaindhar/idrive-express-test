@@ -1,0 +1,8 @@
+- content_for :title, 'New User'
+- content_for :heading, 'New User'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a{href: users_path}= fa_icon 'group', text: 'Users'
+  %li.breadcrumb-item.active New User
+
+= render 'form', action: 'new', modal: false

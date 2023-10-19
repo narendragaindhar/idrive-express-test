@@ -1,0 +1,10 @@
+- content_for :title, "Edit Order #{@order.id}"
+- content_for :heading, "Edit Order"
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a{href: orders_path}= fa_icon 'cubes', text: 'Orders'
+  %li.breadcrumb-item
+    %a{href: order_path(@order)} Order ##{@order.id}
+  %li.breadcrumb-item.active Edit
+
+= render 'form'

@@ -1,0 +1,62 @@
+model_class: Destination
+records:
+  -
+    core:
+      key: alchemy
+    update:
+      name: Quadranet Datacenter
+      active: true
+    create:
+      address:
+        address: 6171 W Century Blvd
+        city: Los Angeles
+        state: CA
+        zip: 90045
+  -
+    core:
+      key: viawest_1
+    update:
+      name: Viawest 1 Datacenter
+      active: true
+    create:
+      address:
+        address: 3935 NW Aloclek Place Bldg. D
+        city: Hillsboro
+        state: OR
+        zip: 97124
+  -
+    core:
+      key: office
+    update:
+      name: IDrive Office
+      active: true
+    create:
+      address:
+        address: 26115 Mureau Road, Suite A
+        city: Calabasas
+        state: CA
+        zip: 91302
+  -
+    core:
+      key: iron_mountain
+    update:
+      name: Iron Mountain Datacenter
+      active: true
+    create:
+      address:
+        address: 11680 HAYDEN RD
+        city: MANASSAS
+        state: VA
+        zip: 20109
+  -
+    core:
+      key: viatel
+    update:
+      name: Viatel Datacenter
+      active: true
+    create:
+      address:
+        address: Unit 1, College Business & Technology Park, Bóthar Bhaile Bhlainséir Thuaidh
+        city: Ballycoolen
+        state: Dublin 15
+        zip: D15 PEC4

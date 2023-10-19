@@ -1,0 +1,4 @@
+-# <a> tag for emails
+- color = (local_assigns.has_key? :color) ? "color: #{color};" : link_color
+%a{href: href, target: '_blank', style: "text-decoration: none; #{color}"}<
+  = yield.strip

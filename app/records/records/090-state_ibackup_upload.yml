@@ -1,0 +1,93 @@
+model_class: State
+records:
+  -
+    core:
+      key: ibackup_upload_order_created
+    update:
+      active: true
+      is_drive_event: false
+      notify_by_default: true
+      order_type:
+        key: ibackup_upload
+      public_by_default: true
+    create:
+      label: Order created
+      description: >-
+        Your order has been received! We'll start working on it right away.
+      percentage: 14
+  -
+    core:
+      key: ibackup_upload_order_drive_return_delayed
+    update:
+      active: true
+      notify_by_default: true
+      order_type:
+        key: ibackup_upload
+      is_out_of_our_hands: true
+      public_by_default: true
+    create:
+      label: Drive return delayed
+      description: >-
+        It has been a while since your order has shipped. To avoid being
+        charged for the drive, please ship it back to us as soon as possible.
+      percentage: 49
+  -
+    core:
+      key: ibackup_upload_order_upload_restarted
+    update:
+      notify_by_default: false
+      order_type:
+        key: ibackup_upload
+      public_by_default: false
+    create:
+      label: Upload restarted
+      description: Your data upload is still ongoing.
+      percentage: 91
+  -
+    core:
+      key: ibackup_upload_order_completed
+    update:
+      active: true
+      notify_by_default: true
+      order_type:
+        key: ibackup_upload
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Upload completed
+      description: >-
+        Your IBackup Express transfer is now complete!
+
+
+        We recommend you to verify the uploaded data in your account online and
+        let us know if you find any discrepancies. You are also now ready to
+        begin performing incremental backups from your computer and we
+        encourage you to start an incremental backup at your next convenience.
+
+
+        Thank you for choosing IBackup and we hope that you are satisfied with
+        our service. If you have any billing, sales or technical questions
+        please refer to our website (www.ibackup.com) or call our Customer
+        Support team at 866-748-0555, 6AM - 6PM PST, Monday - Friday.
+
+
+        We always appreciate feedback and encourage you to leave your thoughts
+        and suggestions via our online feedback form:
+        https://www.ibackup.com/feedback_new.htm
+
+
+        Thanks again!
+  -
+    core:
+      key: ibackup_upload_order_drive_never_returned
+    update:
+      notify_by_default: true
+      order_type:
+        key: ibackup_upload
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Drive never returned
+      description: >-
+        You have been charged due to failure to return your IBackup Express
+        drive back to us.

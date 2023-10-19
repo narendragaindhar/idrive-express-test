@@ -1,0 +1,12 @@
+- content_for :title, "New State for Order ##{@order.id}"
+- content_for :heading, "New Order ##{@order.id} State"
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a{href: orders_path} Orders
+  %li.breadcrumb-item
+    %a{href: order_path(@order)} Order ##{@order.id}
+  %li.breadcrumb-item
+    %a{href: order_path(@order)+'#new_order_state'} States
+  %li.breadcrumb-item.active New
+
+= render 'form'

@@ -1,0 +1,58 @@
+model_class: State
+records:
+  -
+    core:
+      key: ibackup_restore_order_created
+    update:
+      active: true
+      is_drive_event: false
+      order_type:
+        key: ibackup_restore
+      notify_by_default: true
+      public_by_default: true
+    create:
+      label: Order created
+      description: >-
+        Your order has been received! We'll start working on it right away.
+      percentage: 14
+  -
+    core:
+      key: ibackup_restore_order_completed
+    update:
+      notify_by_default: true
+      order_type:
+        key: ibackup_restore
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Restore completed
+      description: >-
+        We have received your IBackup Express drive back at our offices. This
+        completes your order. Thank you for using IBackup Express!
+  -
+    core:
+      key: ibackup_restore_order_drive_never_returned
+    update:
+      notify_by_default: true
+      order_type:
+        key: ibackup_restore
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Drive never returned
+      description: >-
+        You have been charged for failing to return your IBackup Express drive
+        back to us.
+  -
+    core:
+      key: ibackup_restore_order_cancelled
+    update:
+      is_drive_event: false
+      notify_by_default: true
+      order_type:
+        key: ibackup_restore
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Order cancelled
+      description: Your order has been cancelled.

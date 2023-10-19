@@ -1,0 +1,5 @@
+%span.tag.tag-pill.js-order-day-count{class: order_label_class(order), title: order_label_title(order)}
+  - if order.day_count.present? && !order.day_count.stale?
+    = order.day_count.count
+  - else
+    = fa_icon 'ellipsis-h'

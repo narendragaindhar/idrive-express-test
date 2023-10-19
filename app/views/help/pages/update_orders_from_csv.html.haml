@@ -1,0 +1,159 @@
+- content_for :title, 'Update orders from a CSV file'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a.breadcrumb-link{href: helps_path}= fa_icon 'question-circle', text: 'Help'
+  %li.breadcrumb-item.active= yield(:title)
+
+%h1= yield(:title)
+%p
+  You can upload a CSV formatted file to the Express site and bulk update
+  multiple orders at the same time. To get started, visit the
+  = succeed '.' do
+    %a{href: csv_files_path} CSV update page
+
+%h3 Supported columns
+%p
+  Please ensure that the CSV file you are uploading contains the correct
+  columns so that the orders will be processed correctly. Currently the Express
+  site supports CSV files that have columns in the following order:
+
+%table.table.table-sm.table-bordered.table-responsive
+  %thead
+    %tr
+      %th IDriveStaff
+      %th JW No.
+      %th Status
+      %th Ticket number
+      %th Username
+      %th PD
+      %th Customer Name
+      %th Street
+      %th City
+      %th State
+      %th Zip code
+      %th Country
+      %th MAC number
+      %th HDD S/N
+      %th Tracking number
+      %th Responed to customer
+      %th Date Ordered
+      %th Promo Code
+      %th OrderID
+      %th Notes
+
+.alert.alert-warning
+  %b Heads up!
+  This was taken from the current Google spreadsheet as reference. The
+  system expects the file to be in this format so care must be taken not to
+  change the
+  %b order of the columns
+  without first consulting with someone from the
+  = succeed '.' do
+    %a{href: 'mailto:dev@idrive.com'} IDrive dev team
+  Failure to do so may result in
+  = succeed ':' do
+    %b any of the following
+  %ul
+    %li No orders being processed
+    %li No orders being updated
+    %li
+      The wrong data being added to orders -
+      %b bad!
+    %li
+      The wrong data being sent to customers -
+      %b very bad!
+  Please use good judgement here and keep the format of the CSV the same unless
+  directed by someone from IDrive.
+
+%h3 Supported actions
+%p
+  When processing the CSV, the system will take the following potential actions
+  based on the data in the CSV file. It tries to be as fault tolerant as it can
+  be and take the best action it can.
+%p
+  The system will not create duplicate data and states from repeated uploads of
+  the same CSV file. This means that you can safely upload new versions of the
+  same CSV file and not worry about duplicate information being added to the
+  order every time.
+%p
+  After the CSV processed, you will be shown the results. This will include
+  information such as how many orders were updated and any
+  %a{href: '#warnings-and-errors'} warnings or errors
+  that occurred.
+
+%h5 Ticket number
+%p
+  The column
+  %code Ticket number
+  will be used to look up the order based on the ID given in that cell. If no
+  order can be found, it will immediately skip to the next order.
+
+%h5 MAC number & HDD S/N
+%p
+  Values in the
+  %code MAC number
+  and
+  %code HDD S/N
+  columns will be used to create and assign a drive to the given order.
+
+%h5 Notes
+%p
+  A value in the
+  %code Notes
+  column will create a private state for the order with whatever data is in
+  that cell. Note that as long as the value stays the same for future runs, no
+  additional states will be created. However if the value in this cell changes
+  in a future run a new state will be created.
+
+%h5 Tracking number
+%p
+  A value in the
+  %code Tracking number
+  column will create two states for the order:
+%ol
+  %li A private state containing just the tracking number
+  %li
+    A public state that completes the order and notifies the customer in an
+    email. Note that the order must have a drive associated with it for this
+    state to be added. Otherwise it will generate a
+    = succeed '.' do
+      %a{href: '#warnings-and-errors'} warning
+
+%h5 Status
+%p
+  The site will also look for a few special values in the
+  %code Status
+  column and can do a few extra actions based on what is encountered there.
+  Please make sure to use
+  %i only this column
+  when adding status information (ie don't put the text "Cancelled" in the
+  %code Tracking number
+  column).
+%ul
+  %li
+    If it encounters the text
+    %code hold
+    or
+    %code on hold
+    it will assume there is something wrong with the order and refuse to
+    process it. A
+    %a{href: '#warnings-and-errors'} warning
+    will be generated.
+  %li
+    If it encounters the text
+    %code cancel
+    or
+    %code cancelled
+    it will cancel the order on the Express site and add a public state to the
+    order that will notify the customer of what has happened.
+
+%h3#warnings-and-errors Warnings and errors
+%p
+  As is the case with this sort of processing, weird things can happen during
+  this kind of batch processing. If something happens, warnings or errors will
+  be generated for you to fix. In general an "error" is something wrong with
+  the file as a whole. It could be any number of things including wrong file
+  type, bad formatting, bad encoding or more. Warnings, on the other hand, are
+  more informative and do not stop the processing of the file. They may offer
+  helpful feedback for you to correct in the future when uploading an updated
+  CSV file to the site.

@@ -1,0 +1,57 @@
+module Release
+  VERSION_FILE = 'config/version'.freeze
+  ROOT = File.dirname(File.dirname(File.dirname(File.absolute_path(__FILE__))))
+
+  def self.release(level, version_file: VERSION_FILE)
+    version_file_abs_path = File.join(ROOT, version_file)
+
+    ensure_clean! version_file
+    puts "Releasing a new #{level} version..."
+    version = current_version version_file_abs_path
+    puts "Current version: #{version}"
+    version = version.bump level
+    puts "New version: #{version}"
+    update_version version_file_abs_path, version
+    puts 'Commiting changes'
+    commit version_file, version
+    puts 'Tagging release'
+    tag version
+    puts 'Pushing to remote'
+    push version
+  end
+
+  def self.ensure_clean!(file)
+    return unless `git status '#{file}'`.match?(/^\s+modified:\s+#{file}$/)
+    raise "#{file} is dirty. Please commit your changes and run again."
+  end
+
+  def self.current_version(version_file)
+    Release::Version.new(*File.read(version_file).strip.split('.').map(&:to_i))
+  end
+
+  def self.update_version(version_file, version)
+    File.open(version_file, 'w') do |f|
+      f.write("#{version}\n")
+    end
+  end
+
+  def self.commit(version_file, version)
+    run!("git add '#{version_file}' && git commit --message 'Bumping version to #{version}'")
+  end
+
+  def self.tag(version)
+    run!("git tag --annotate '#{version.to_tag}' --message 'Release #{version.to_tag}'")
+  end
+
+  def self.push(version)
+    run!('git push origin master')
+    run!("git push origin '#{version.to_tag}'")
+  end
+
+  def self.run!(command)
+    puts command
+    raise "Command failed: #{command}" unless system(command)
+  end
+end
+
+require_relative 'release/version'

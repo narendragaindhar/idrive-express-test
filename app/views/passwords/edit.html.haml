@@ -1,0 +1,8 @@
+- content_for :title, 'Reset password'
+- content_for :heading, 'Reset password'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a{href: new_password_path}= fa_icon 'key', text: 'Forgot password'
+  %li.breadcrumb-item.active Reset password
+
+= render 'form'

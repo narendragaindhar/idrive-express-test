@@ -1,0 +1,28 @@
+-# reports/_result.html.haml
+
+- if @report.errors.any?
+  .alert.alert-danger.m-0
+    Could not process the report due to the following:
+    %ul
+      - @report.errors.full_messages.each do |message|
+        %li= message
+- else
+  %h4= "Results (#{@report.result_count})"
+  %table.table.table-responsive
+    %thead
+      - @report.result.columns.each do |column|
+        %th= column.humanize
+    %tbody
+      - if @report.result_count.positive?
+        - order_id_index = @report.result.columns.index('order_id')
+        - @report.result.rows.each do |row|
+          %tr
+            - row.each_with_index do |value, i|
+              %td
+                - if order_id_index == i && value.is_a?(Integer)
+                  %a{href: order_path(value)}= value
+                - else
+                  = value
+      - else
+        %tr
+          %td{colspan: @report.result.columns.size} No results

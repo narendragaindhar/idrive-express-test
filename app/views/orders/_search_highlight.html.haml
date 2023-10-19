@@ -1,0 +1,14 @@
+-# due to the keyword search, be a little naive in how we show matches
+- if query != nil and (query.count(':') == 0 or (query.count(':') == 1 and query.count(' ') == 0))
+  - query_re = Regexp.new(Regexp.escape(query.split(':').last.gsub(/\A['"]|['"]\z/, '')), Regexp::IGNORECASE).freeze
+  - matches = []
+  - matches << "Customer comment match: #{order.comments}" if order.comments =~ query_re
+  - for order_state in order.order_states
+    - matches << "State match: #{order_state.state.label} - #{order_state.comments}" if "#{order_state.state.label}#{order_state.comments}" =~ query_re
+  - matches << "Customer match: #{order.customer.name}, #{order.customer.username}, #{order.customer.email}, #{order.customer.server}" if "#{order.customer.name}#{order.customer.username}#{order.customer.email}#{order.customer.server}" =~ query_re
+  - matches << "Drive match: Identification number - #{order.drive.identification_number}, Serial Number - #{order.drive.serial}" if order.drive.present? and "#{order.drive.identification_number}#{order.drive.serial}" =~ query_re
+
+  - if not matches.empty?
+    %ul.list-unstyled.orders-search-results
+      - for match in matches
+        %li.orders-search-result.small= match

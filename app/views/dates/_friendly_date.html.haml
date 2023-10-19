@@ -1,0 +1,8 @@
+-# render a given datetime object as text inside an inline element that also
+-# shows the full date in the title
+%span{title: date_time.strftime('%Y-%m-%d %H:%M:%S')}
+  - if local_assigns.fetch(:in_words, false)
+    = time_ago_in_words date_time, include_seconds: true
+    ago
+  - else
+    = date_time.strftime('%b %e, %Y at %l:%M%P')

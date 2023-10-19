@@ -1,0 +1,12 @@
+- if @order.present? and @order.order_type.product.is? :ibackup
+  - product = 'IBackup'
+  - email = 'support@ibackup.com'
+- else
+  - product = 'IDrive'
+  - email = 'support@idrive.com'
+= yield
+:plain
+  Thanks,
+  The #{product} Team
+  ----------------
+  Need more help? Contact us at #{email}

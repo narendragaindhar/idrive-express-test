@@ -1,0 +1,5 @@
+---
+:concurrency: <%= ENV.fetch('SIDEKIQ_CONCURRENCY') { 1 } %>
+:queues:
+  - default # normal jobs go here
+  - mailers # emails go here

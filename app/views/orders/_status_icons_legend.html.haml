@@ -1,0 +1,38 @@
+.card
+  .card-block
+    %h6 Legend
+    %ul.list-inline.mb-0
+      %li.list-inline-item
+        %i.fa.fa-fw.fa-dot-circle-o
+        \- Order in progress
+      %li.list-inline-item
+        %i.fa.fa-fw.fa-check-circle.text-success
+        \- Order completed
+      %li.list-inline-item
+        %i.fa.fa-fw.fa-bell-o
+        \- New order
+      %li.list-inline-item
+        %i.fa.fa-fw.fa-star
+        \- Priority order
+      %li.list-inline-item
+        %i.fa.fa-fw.fa-star.text-danger
+        \- High priority order
+      %li.list-inline-item
+        %i.fa.fa-fw.fa-hdd-o
+        \- Order has a drive
+      %li.list-inline-item
+        %i.fa.fa-fw.fa-flag-o
+        \- Review this order before shipping
+      %li.list-inline-item
+        %i.fa.fa-fw.fa-map-o
+        \- International order
+      %li.list-inline-item
+        %span.tag.tag-warning &nbsp;
+        \- Order has been active
+        = ENV['ORDERS_WARNING_DAYS'].to_i
+        or more days
+      %li.list-inline-item
+        %span.tag.tag-danger &nbsp;
+        \- Order has been active
+        = ENV['ORDERS_DANGER_DAYS'].to_i
+        or more days

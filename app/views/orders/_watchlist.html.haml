@@ -1,0 +1,36 @@
+.card
+  .card-header
+    %strong Watching This Order
+  %ul.list-group.list-group-flush
+    - if @order.users.present?
+      - for user in @order.users
+        %li.list-group-item
+          - if policy(@order).update?
+            %a.tag.tag-danger.tag-pill.pull-right{href: order_user_path(@order, user), title: 'Remove', data: {confirm: "Are you sure you want to delete #{user.name} from this order?", method: :delete}}= fa_icon 'times'
+          = user.name
+    - else
+      %li.list-group-item.text-muted No one... yet.
+  - if policy(@order).update?
+    .card-footer
+      = simple_form_for User.new, url: order_users_path(@order) do |f|
+        = f.input :id, collection: User.all_by_name(*@order.users), label: false, prompt: 'Add to Watchlist'
+        %p#error_message{:style => "color: red;"}
+        %button.btn.btn-secondary{type: 'submit', id: 'add-watchlist-button'} Add
+
+// Validate Add button when no user is selected from the Watchlist dropdown.
+// To ensure proper execution order of script, we have used CoffeeScript code inline within the Haml file.
+:coffeescript
+  $(document).ready ->
+    addButton = document.getElementById("add-watchlist-button")
+    selectInput = document.querySelector("select#user_id")
+    error_message = document.getElementById("error_message")
+
+    addButton.addEventListener("click", (event) ->
+      if selectInput.value is ""
+        event.preventDefault()
+        error_message.textContent = "Select a user from the Watchlist."
+    )
+
+    selectInput.addEventListener("change", ->
+      error_message.textContent = ""
+    )

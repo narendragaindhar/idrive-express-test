@@ -1,0 +1,6 @@
+- for name, messages in flash
+  - messages = [messages] unless messages.is_a?(Array)
+  - for message in messages
+    .alert{class: "alert-#{name.to_s == 'notice' ? 'success' : 'danger'}"}
+      %button.close{type: 'button', aria: {hidden: true}, data: {dismiss: 'alert'}}= fa_icon 'remove'
+      %div{id: "flash_#{name}"}= message

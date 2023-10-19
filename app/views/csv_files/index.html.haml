@@ -1,0 +1,22 @@
+- content_for :title, 'Update orders from CSV'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item.active= fa_icon 'file-excel-o', text: yield(:title)
+
+.col-xs-12.col-lg-8.offset-lg-2.mb-1
+  %h1= yield(:title)
+  %p
+    Batch update multiple orders from a CSV formatted file.
+    = succeed '.' do
+      %a{href: help_path('update-orders-from-csv')} Learn more
+
+  - if not @csv_file.errors.empty?
+    .alert.alert-danger
+      = pluralize(@csv_file.errors.size, 'error')
+      occurred while processing the CSV file:
+      %ul.mb-0
+        - for error in @csv_file.errors.full_messages
+          %li= error
+
+  = simple_form_for(@csv_file, multipart: true) do |f|
+    = f.input :file, as: :file, input_html: {class: 'form-control-file'}
+    %button.btn.btn-primary{type: 'submit', data: {disable_with: 'Updating...'}} Update orders

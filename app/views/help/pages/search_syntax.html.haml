@@ -1,0 +1,155 @@
+- content_for :title, 'Search syntax'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a.breadcrumb-link{href: helps_path}= fa_icon 'question-circle', text: 'Help'
+  %li.breadcrumb-item.active= yield(:title)
+
+%h1 Search syntax
+%p
+  Improve your searching by learning how your queries are interpreted by the
+  site.
+
+%h3#keywords Keyword searches
+%p
+  All keyword searches must be of the following form:
+  %code< keyword:search
+  \. If you want to search multiple words for a keyword, use single or double
+  quotes:
+  %code< keyword:"multiple search terms"
+  \.
+.alert.alert-warning
+  Make sure that there is
+  %b NO SPACE
+  following the keyword. The search
+  %code keyword: term
+  is not the same as
+  %code keyword:term
+  and will return different results!
+
+%h3#case Search case
+%p
+  All searches are case insentitive. The text
+  %code completed
+  is the same as
+  %code Completed
+  or even
+  %code< COMPLETED
+  \.
+
+%h3#complex-queries Complex queries
+%p
+  When the same keyword is used multiple times, the results are
+  %b ORed
+  together. The search
+  %a{href:orders_path(q: 'state:international state:delayed')}
+    state:international state:delayed
+  means search all orders where the state contains the text "international" OR
+  "delayed".
+%p
+  When different keywords are used, the results are
+  %b ANDed
+  together. The search
+  %a{href:orders_path(q: 'is:open updated:<2016-11-18')}
+    is:open updated:<2016-11-18
+  means search all orders that are still active AND have not been updated
+  since before November 18, 2016.
+
+%h3#errors Search errors
+%p
+  If a parsing error occurs because your query was not formatted correctly
+  an error will be shown and no results will be returned. However, if you are
+  using unsupported search features (ie bad keywords or poorly formatted
+  dates) all the matching results from the other qualifiers will be returned
+  even though the bad search term will not perform any filtering.
+
+%h3#dates Dates
+%p
+  Date formatting largely follows the
+  %a{href: 'http://en.wikipedia.org/wiki/ISO_8601', target: '_blank'}
+    ISO8601 standard
+  which is
+  %code YYYY-MM-DD
+  (ie year-month-day). You may also add some optional time information,
+  formatted as
+  %code YYYY-MM-DDTHH:MM:SS
+  (ie year-month-day, a literal "T", hour-minute-second).
+.alert.alert-info
+  For convenience, all dates and times are interpretted within the PST timezone
+  rather than the more standard UTC timezone.
+%p
+  Hours are interpreted in a 24 hour time clock (ie 15:00:00 is 3:00 pm).
+  %em
+    Note that when a specific time is used the search must be placed within
+    quotes due to the use of colons (":") in the time.
+  If you fail to do this, the search will fail because the system will think
+  you are specifying an additional keyword.
+%p
+  The date can also be a special value
+  %code today
+  which (of course) refers to the time span of today only.
+%h5 Equality quantifiers
+%p
+  All exact dates can be preceeded by an equality qualifier. Unless you
+  explicitly specify one, the site will assume you want
+  %code =
+  (equal to).
+%ul
+  %li
+    %code >2015-10-12
+    dates greater than October 12, 2015
+  %li
+    %code >=2015-09-20
+    dates greater than or equal to September 20, 2015
+  %li
+    %code =2016-02-19T06:00:00
+    dates equal to February 19 2016 at 6:00am
+  %li
+    %code <2016-03-02
+    dates less than March 2, 2016
+  %li
+    %code <=2016-07-04
+    dates less than or equal to July 4, 2016
+%h5 Ranges
+%p
+  Dates can also be expressed as a range. Dates like this are given in the
+  form
+  %code DATE..DATE
+  (ie date string, literal
+  %code ..
+  , date string). For example:
+%ul
+  %li
+    %code 2016-02-01..2016-03-01
+    the month of February 2016
+  %li
+    %code 2015-01-01..2016-01-01
+    the year of 2015
+  %li
+    %code 2016-11-01T10:00:00..2016-11-01T12:00:00
+    November 1, 2016 between the times of 10:00am and 12:00pm
+
+%h3#quotes Omit quotation marks and spaces in queries
+%p
+  If you prefer a more compact notation, you can omit the quotations and the
+  spaces for any of these criteria. Quotations need to be included only if the
+  query contains whitespace. For example:
+%ul
+  %li
+    Not needed:
+    %a{href:orders_path(q: 'state:shipped')} state:shipped
+  %li
+    Not needed:
+    %a{href:orders_path(q: 'order_type:idrive-express-upload')}
+      order_type:idrive-express-upload
+  %li
+    Not needed:
+    %a{href:orders_path(q: 'created:2016-11-02')}
+      created:2016-11-02
+  %li
+    Needed:
+    %a{href:orders_path(q: 'order_type:"IDrive One"')}
+      order_type:"IDrive One"
+  %li
+    Needed:
+    %a{href:orders_path(q: 'updated:"2016-11-10T12:00:00..2016-11-10T05:00:00"')}
+      updated:"2016-11-10T12:00:00..2016-11-10T05:00:00"

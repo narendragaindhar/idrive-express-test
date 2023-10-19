@@ -1,0 +1,15 @@
+.row
+  .col-sm-8.offset-sm-2.col-md-6.offset-md-3.col-lg-4.offset-lg-4
+    = simple_form_for @user, url: login_path do |f|
+      %fieldset.card
+        .card-block
+          = f.input :email
+          = f.input :password
+          .form-check.mb-0
+            %label.form-check-label
+              = f.check_box :remember_me, {class: 'form-check-input'}
+              Remember me
+        .card-footer
+          %button.btn.btn-primary.btn-block{type: 'submit', data: {disable_with: 'Logging in...'}}= fa_icon 'sign-in', text: 'Log in'
+          .text-xs-center
+            %a.btn.btn-link{href: new_password_path} Forgot Password

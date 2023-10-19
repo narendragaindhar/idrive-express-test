@@ -1,0 +1,17 @@
+// text helper classes
+// --------------------------------------------------
+
+.text-break {
+  word-wrap: break-word;
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-plain {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}

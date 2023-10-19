@@ -1,0 +1,29 @@
+.row
+  .col-sm-10.offset-sm-1.col-md-8.offset-md-2
+    = simple_form_for @order_state, url: order_state_path(@order), html: {class: 'card'} do |f|
+      .card-header
+        %strong Update order
+      .card-block
+        - states = State.usable(@order.order_type)
+        - states_data = {}
+        - states.map{|s| states_data[s.id] = {notify: s.notify_by_default, public: s.public_by_default, description: s.description}}
+        = f.association :state, collection: states, label: 'What happened?', prompt: 'Choose an event...', label_method: :label_and_percentage, input_html: {data: {states: states_data}}
+        .row.form-group
+          .col-sm-6
+            .form-check
+              %label.form-check-label.cursor-help{title: 'If checked, the customer will receive an update email with the comments below'}
+                = f.check_box :did_notify, {class: 'form-check-input'}
+                Notify customer?
+          .col-sm-6
+            .form-check
+              %label.form-check-label.cursor-help{title: "If checked, the #{@order.order_type.product.name} website will be updated with the comments below"}
+                = f.check_box :is_public, {class: 'form-check-input'}
+                Update #{@order.order_type.product.name} website?
+          .col-xs-12
+            %small.form-text Want to leave a private/internal comment? Just uncheck the boxes above and your comments will only be visible internally by users of the site.
+        = f.input :comments,
+                  input_html: {data: {autogrow: true}},
+                  hint: "Visible to the customer if \"Notify customer?\" or \"Update #{@order.order_type.product.name} website?\" is checked"
+        = f.input :notify_user_id, collection: User.all_by_name(current_user), label: 'Send an email alert to:', wrapper_html: { class: 'm-a-0' }, hint: 'Optional. If chosen, the selected user will receive an email notification with any comments you write.'
+      .card-footer
+        %button.btn.btn-primary{type: 'submit', data: {disable_with: 'Saving Order State...'}} Update

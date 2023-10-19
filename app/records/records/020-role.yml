@@ -1,0 +1,44 @@
+model_class: Role
+records:
+  -
+    core:
+      key: super_user
+    update:
+      name: Super user
+      description: The super user has permission to control all aspects of the site
+  -
+    core:
+      key: idrive_employee
+    update:
+      name: Express agent
+      description: An Express agent can do all normal tasks on the site
+  -
+    core:
+      key: role_manager
+    update:
+      name: Role manager
+      description: A role manager can manage and update roles for other users of the site
+  -
+    core:
+      key: idrive_one_contractor
+    update:
+      name: IDrive One contractor
+      description: An IDrive One contractor helps in building and fulfilling IDrive One orders
+  -
+    core:
+      key: reporting
+    update:
+      name: Reporting
+      description: Can create and run reports which query the database
+  -
+    core:
+      key: support_agent
+    update:
+      name: Support agent
+      description: A support agent can browse the site and view tickets.
+  -
+    core:
+      key: bmr_agent
+    update:
+      name: BMR agent
+      description: An BMR agent helps in building and fulfilling IDrive BMR orders

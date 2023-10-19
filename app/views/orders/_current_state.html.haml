@@ -1,0 +1,14 @@
+- if @order_states.present?
+  .card
+    .card-header
+      %strong= "Latest state: #{@order.label}"
+    .card-block
+      %progress.progress{value: @order.percentage, max: 100}
+      %p.card-text= "#{@order.percentage}% Complete"
+      - if @order.completed_at
+        %p.card-text
+          %em
+            Completed
+            = nice_date_time @order.completed_at, include_time: true, show_today: false, show_on_or_at: true
+            - if @order.last_updating_user.present?
+              = "by #{@order.last_updating_user}"

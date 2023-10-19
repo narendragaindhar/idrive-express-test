@@ -1,0 +1,22 @@
+// layout styles
+
+.main-nav-navbar-brand {
+  display: block;
+  float: none;
+  margin-bottom: .5rem;
+  margin-right: 0;
+
+  @include media-breakpoint-up(md) {
+    display: inline;
+    float: left;
+    margin-right: 1rem;
+  }
+
+  @include media-breakpoint-up(lg) {
+    margin-bottom: 0;
+  }
+}
+
+.footer {
+  padding: 1em 0;
+}

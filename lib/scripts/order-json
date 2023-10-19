@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+
+require 'factory_bot'
+require 'faker'
+
+DEFAULT_FACTORY = :api_v4_order
+
+# load our factories
+FactoryBot.find_definitions
+
+attrs = Hash.new { |h, k| h[k.to_sym] = Hash.new(&h.default_proc) }
+factory = nil
+
+ARGV.each do |arg|
+  if arg.start_with? '--'
+    raise ArgumentError, "Invalid factory attribute: \"#{arg}\"" unless arg.length > 4 && arg.include?('=')
+
+    arg = arg[2..].split('=')
+    *key_parts, key = arg.shift.split('-')
+    value = arg.join
+    key_parts.inject(attrs, :[])[key.to_sym] = value
+  elsif factory.nil?
+    factory = arg.to_sym
+  else
+    raise "Already defined factory (\"#{factory}\"). You passed: \"#{arg}\""
+  end
+end
+
+if factory.nil?
+  warn "No factory specified. Using default factory \"#{DEFAULT_FACTORY}\""
+  factory = DEFAULT_FACTORY
+end
+
+puts JSON.pretty_generate(FactoryBot.attributes_for(factory, attrs))

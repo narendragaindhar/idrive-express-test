@@ -1,0 +1,74 @@
+= simple_form_for @order do |f|
+  .row
+    .col-md-6.col-lg-4
+      .card
+        .card-header
+          %strong Order information
+        %ul.list-group.list-group-flush
+          %li.list-group-item= f.association :order_type, collection: OrderType.includes(:product).order(:id), label_method: :full_name
+          %li.list-group-item
+            .row
+              .col-xs-6= f.input :size_count, as: :integer, label: 'Size'
+              .col-xs-6= f.input :size_units, collection: Order::UNITS, label: 'Units'
+          %li.list-group-item
+            %ul.nav.nav-tabs{role: 'tablist'}
+              - show_existing = @order.drive.present? || !@order.order_type.try(:key_is?, :idrive_one, :idrive_bmr)
+              %li.nav-item
+                %a.nav-link{class: "#{show_existing ? 'active' : ''}", data: {toggle: 'tab'}, href: '#drive-existing', role: 'tab'} Existing drive
+              %li.nav-item
+                %a.nav-link{class: "#{show_existing ? '' : 'active'}", data: {toggle: 'tab'}, href: '#drive-new', role: 'tab'} New drive
+            .tab-content.pt-1
+              .tab-pane{id: 'drive-existing', class: "#{show_existing ? 'active' : ''}", role: 'tabpanel'}
+                = f.input :drive, label: false, hint: 'Choose an "available" drive to ship with the order. All "in use" drives are currently being used in another order however you can manually override this if need be.' do
+                  = f.input_field :drive_label, url: autocomplete_drives_path, as: :autocomplete, id_element: '#order_drive_id', class: 'form-control', placeholder: 'Search for a drive...'
+                  = f.input_field :drive_id, type: :hidden
+              .tab-pane{id: 'drive-new', class: "#{show_existing ? '' : 'active'}", role: 'tabpanel'}
+                = f.simple_fields_for @drive do |ff|
+                  = ff.input :serial, input_html: {name: 'drive[serial]'}, hint: 'Generally serial number of the device'
+                  = ff.input :identification_number, label: 'ID/MAC number/SSH key', input_html: {name: 'drive[identification_number]'}, hint: 'Generally the ID or MAC number of the enclosure. Can also be something unique in the software like an SSH key.'
+                  .row
+                    .col-xs-6= ff.input :size_count, as: :integer, label: 'Size', placeholder: 'eg "128"', input_html: {name: 'drive[size_count]'}
+                    .col-xs-6= ff.input :size_units, collection: Drive::UNITS, label: 'Units', input_html: {name: 'drive[size_units]'}
+          %li.list-group-item= f.input :needs_review, hint: 'You may want to double check this user\'s account before shipping this order for any irregularities. If everything looks good you can clear this flag'
+          %li.list-group-item= f.input :os, label: 'Operating system'
+
+    .col-md-6.col-lg-4
+      %fieldset.card
+        .card-header
+          %strong Customer
+        %ul.list-group.list-group-flush
+          %li.list-group-item
+            = f.input :customer, label: false do
+              = f.input_field :customer_label, url: autocomplete_customers_path, as: :autocomplete, id_element: '#order_customer_id', class: 'form-control', placeholder: 'Search for a customer...'
+              = f.input_field :customer_id, type: :hidden
+
+      %fieldset.card
+        .card-header
+          %strong Address
+        %ul.list-group.list-group-flush
+          = f.simple_fields_for :address do |ff|
+            %li.list-group-item= ff.input :recipient
+            %li.list-group-item= ff.input :organization
+            %li.list-group-item= ff.input :address
+            %li.list-group-item= ff.input :city
+            %li.list-group-item= ff.input :state
+            %li.list-group-item= ff.input :zip
+            %li.list-group-item= ff.input :country, as: :string
+
+    .col-md-12.col-lg-4
+      %fieldset.card
+        .card-header
+          %strong Return address
+        %ul.list-group.list-group-flush
+          %li.list-group-item= f.association :destination
+
+  - if @order.new_record?
+    - save_text = 'Create'
+    - saving_text = 'Creating'
+    - cancel_path = my_orders_path
+  - else
+    - save_text = 'Update'
+    - saving_text = 'Updating'
+    - cancel_path = my_orders_path
+  %button.btn.btn-primary{type: 'submit', data: {disable_with: "#{saving_text} Order..."}}= fa_icon 'check', text: "#{save_text} Order"
+  %a.btn.btn-secondary{href: cancel_path}= fa_icon 'ban', text: 'Cancel'

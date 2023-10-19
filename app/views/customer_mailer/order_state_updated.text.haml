@@ -1,0 +1,8 @@
+- if @customer.name
+  :plain
+    Hello #{@customer.name},
+:plain
+  Your #{@order.order_type.full_name} order (##{@order.id}) was updated: #{@state.label}
+- if @order_state.comments.present?
+  :plain
+    #{@order_state.comments}

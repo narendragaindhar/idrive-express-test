@@ -1,0 +1,315 @@
+- content_for :title, 'Searching orders'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a.breadcrumb-link{href: helps_path}= fa_icon 'question-circle', text: 'Help'
+  %li.breadcrumb-item.active= yield(:title)
+
+%h1 Searching orders
+%p
+  To search for orders, use the following search qualifiers in any combination.
+.alert.alert-info
+  Want more technical details? Read about the
+  %a{href: help_path('search-syntax')} search syntax
+  supported by the site.
+
+%h3 Generic searches
+%p
+  To perform a generic, naïve search, simply type in the keywords you want to
+  search for. Most searches will work fine using this method but may not always
+  get you the exact results that you want.
+%dl
+  %dt
+    %a{href:orders_path(q: 'shipped')} shipped
+  %dd.pl-1
+    Will search for the text
+    %code shipped
+    within
+    %ul
+      %li Order IDs and comments
+      %li State labels and comments
+      %li Customer emails, names, servers and usernames
+      %li Drive identification numbers and serials
+      %li Order type names
+
+%h3 Comments
+%p
+  The keyword
+  %code comments
+  will search for the given text within the customer's comments for an order
+  and any comment made in an order's states.
+%dl
+  %dt
+    %a{href:orders_path(q: 'comments:asap')} comments:asap
+  %dd.pl-1
+    Searches for the text "asap" within the order's customer comments or state
+    comments.
+  %dt
+    %a{href:orders_path(q: 'comments:"ok to ship"')} comments:"ok to ship"
+  %dd.pl-1
+    Searches for the text "ok to ship" within the order's customer comments or state
+    comments.
+
+%h3 Completed, created and updated
+%p
+  The keywords
+  %code completed
+  ,
+  %code created
+  ,
+  %code updated
+  will filter the order's attribute based on a certain time, date, or date
+  range.
+%p
+  The date format is generally of the form
+  %code YYYY-MM-DD
+  (ie year-month-day) however it is recommended to read the
+  %a{href: help_path('search-syntax', anchor: 'dates')} search syntax
+  to learn all date variations that are supported.
+%dl
+  %dt
+    %a{href:orders_path(q: 'created:2016-11-01')} created:2016-11-01
+  %dd.pl-1
+    Find all orders that were created on November 1, 2016 any time during the
+    day.
+  %dt
+    %a{href:orders_path(q: 'created:">2016-09-20T13:00:00"')}
+      created:">2016-09-20T13:00:00"
+  %dd.pl-1
+    Find all orders that were created after 1:00pm on September 20, 2016 till
+    now.
+  %dt
+    %a{href:orders_path(q: 'updated:<2016-01-01')} updated:<2016-01-01
+  %dd.pl-1
+    Find all orders that were updated before January 1, 2016.
+  %dt
+    %a{href:orders_path(q: 'completed:2016-10-01..2016-11-01')}
+      completed:2016-10-01..2016-11-01
+  %dd.pl-1
+    Find all orders that were completed during the month of October 2016.
+  %dt
+    %a{href:orders_path(q: 'created:today')} created:today
+  %dd.pl-1
+    Find all orders that were created today.
+
+%h3 Customer
+%p
+  The keyword
+  %code customer
+  will find orders that where the customer's name, email, username or data
+  server matches the search term.
+%dl
+  %dt
+    %a{href:orders_path(q: 'customer:john')} customer:john
+  %dd.pl-1
+    Find all orders created by a customer named "john".
+  %dt
+    %a{href:orders_path(q: 'customer:evs1000')} customer:evs1000
+  %dd.pl-1
+    Find all orders created by for customer with the data server "evs1000".
+
+%h3 Drive
+%p
+  The keyword
+  %code drive
+  will find orders where the drive's identification number or serial matches
+  the search term.
+%dl
+  %dt
+    %a{href:orders_path(q: 'drive:IDP1221')} drive:IDP1221
+  %dd.pl-1
+    Find all orders where drive "IDP1221" was used.
+
+%h3 ID
+%p
+  If you know the exact order ID, you can use the keyword
+  %code id
+  to find it.
+%dl
+  %dt
+    %a{href:orders_path(q: 'id:1622')} id:1622
+  %dd.pl-1
+    Find order #1622.
+
+%h3 Is
+%p
+  The keyword
+  %code is
+  can be used to find specific states that in a more human readable way. For
+  example, you can use
+  %code is
+  to determine if:
+%ul
+  %li
+    An order is
+    %code open
+    or
+    %code closed
+%dl
+  %dt
+    %a{href:orders_path(q: 'is:open')} is:open
+  %dd.pl-1
+    Find all active orders.
+  %dt
+    %a{href:orders_path(q: 'is:closed')} is:closed
+  %dd.pl-1
+    Find all completed orders.
+
+%h3 Order type
+%p
+  The keyword
+  %code order_type
+  is used to filter by order types. The following list of terms can be used to
+  find each particular type:
+%ul
+  %li
+    IDrive Express Upload -
+    = succeed ',' do
+      %code IDrive Express Upload
+    %code idrive-express-upload
+    or
+    %code idrive-upload
+  %li
+    IDrive Express Restore -
+    = succeed ',' do
+      %code IDrive Express Restore
+    %code idrive-express-restore
+    or
+    %code idrive-restore
+  %li
+    IDrive360 Express Upload -
+    = succeed ',' do
+      %code IDrive360 Express Upload
+    %code idrive360-express-upload
+    or
+    %code idrive360-upload
+  %li
+    IDrive360 Express Restore -
+    = succeed ',' do
+      %code IDrive360 Express Restore
+    %code idrive360-express-restore
+    or
+    %code idrive360-restore
+  %li
+    IDrive One -
+    = succeed ',' do
+      %code IDrive One
+    %code idrive-one
+    or
+    %code one
+  %li
+    IDrive BMR -
+    = succeed ',' do
+      %code IDrive BMR
+    %code idrive-bmr
+    or
+    %code bmr
+  %li
+    IBackup Express Upload -
+    = succeed ',' do
+      %code IBackup Express Upload
+    %code ibackup-express-upload
+    or
+    %code ibackup-upload
+  %li
+    IBackup Express Restore -
+    = succeed ',' do
+      %code IBackup Express Restore
+    %code ibackup-express-restore
+    or
+    %code ibackup-restore
+%dl
+  %dt
+    %a{href:orders_path(q: 'order_type:idrive-upload')}
+      order_type:idrive-upload
+  %dd.pl-1
+    Find all IDrive Express Upload orders.
+  %dt
+    %a{href:orders_path(q: 'order_type:"IDrive Express Restore"')}
+      order_type:"IDrive Express Restore"
+  %dd.pl-1
+    Find all IDrive Express Restore orders.
+  %dt
+    %a{href:orders_path(q: 'order_type:"IDrive360 Express Restore"')}
+      order_type:"IDrive360 Express Restore"
+  %dd.pl-1
+    Find all IDrive360 Express Restore orders.
+  %dt
+    %a{href:orders_path(q: 'order_type:"IDrive One"')} order_type:"IDrive One"
+  %dd.pl-1
+    Find all IDrive One orders.
+  %dt
+    %a{href:orders_path(q: 'order_type:idrive-bmr')} order_type:idrive-bmr
+  %dd.pl-1
+    Find all IDrive BMR orders.
+  %dt
+    %a{href:orders_path(q: 'order_type:ibackup-upload')}
+      order_type:ibackup-upload
+  %dd.pl-1
+    Find all IBackup Express Upload orders.
+  %dt
+    %a{href:orders_path(q: 'order_type:ibackup-express-restore')}
+      order_type:ibackup-express-restore
+  %dd.pl-1
+    Find all IBackup Express Restore orders.
+
+%h3 Size
+%p
+  The keyword
+  %code size
+  can be used to find orders of a specific size. Values can be fractional. The
+  units can be any of the following:
+  = succeed ',' do
+    %code b
+  = succeed ',' do
+    %code kb
+  = succeed ',' do
+    %code mb
+  = succeed ',' do
+    %code gb
+  %code tb
+  or
+  = succeed '.' do
+    %code pb
+%dl
+  %dt
+    %a{href:orders_path(q: 'size:2.5tb')}
+      size:2.5tb
+  %dd.pl-1
+    Find all 2.5 terabyte orders.
+  %dt
+    %a{href:orders_path(q: 'size:256gb')} size:256gb
+  %dd.pl-1
+    Find all 256 gigabyte orders.
+
+%h3 State
+%p
+  The keyword
+  %code state
+  can be used to find orders where a specific state happened during them.
+%dl
+  %dt
+    %a{href:orders_path(q: 'state:"international shipping"')}
+      state:"international shipping"
+  %dd.pl-1
+    For finding all international shipping orders.
+  %dt
+    %a{href:orders_path(q: 'state:cancelled')} state:cancelled
+  %dd.pl-1
+    Find all cancelled orders.
+
+%h3 User
+%p
+  The keyword
+  %code user
+  can be used to find orders where a specific user has interacted with the
+  order. It will match the user's name and email address.
+%dl
+  %dt
+    %a{href:orders_path(q: 'user:"jon g"')} user:"jon g"
+  %dd.pl-1
+    Finding all orders where a user named "jon g" interacted with it.
+  %dt
+    %a{href:orders_path(q: 'user:nic@idrive.com')} user:nic@idrive.com
+  %dd.pl-1
+    Finding all orders where a user with email address "nic@idrive.com"
+    interacted with it.

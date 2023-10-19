@@ -1,0 +1,75 @@
+model_class: State
+records:
+  -
+    core:
+      key: idrive_one_order_created
+    update:
+      active: true
+      is_drive_event: false
+      notify_by_default: true
+      order_type:
+        key: idrive_one
+      public_by_default: true
+    create:
+      label: Order created
+      description: >-
+        We have received your order and have started processing it. It will
+        ship soon!
+      percentage: 20
+  -
+    core:
+      key: idrive_one_status_update
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_one
+      public_by_default: false
+    create:
+      label: Status update
+      description: Additional information during the processing of the order
+      percentage: 50
+  -
+    core:
+      key: idrive_one_shipping_label_generated
+    update:
+      active: true
+      is_drive_event: false
+      notify_by_default: false
+      order_type:
+        key: idrive_one
+      public_by_default: false
+    create:
+      label: Shipping label generated
+      description: "USPS tracking number: XXXX"
+      percentage: 80
+  -
+    core:
+      key: idrive_one_order_shipped
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive_one
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Order shipped
+      description: >-
+        Your IDrive One has been shipped and your order is complete! Your
+        tracking number is XXXXX. Please allow 2-3 days for delivery.
+  -
+    core:
+      key: idrive_one_order_cancelled
+    update:
+      active: true
+      is_drive_event: false
+      notify_by_default: true
+      order_type:
+        key: idrive_one
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Order cancelled
+      description: Your IDrive One order has been cancelled.

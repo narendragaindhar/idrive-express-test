@@ -1,0 +1,49 @@
+-# reports/_form.html.haml
+
+.card
+  %h4.card-header= yield :title
+  .card-block
+    - if @report.errors.any?
+      .alert.alert-danger The report could not be saved. Please fix the following errors and try again.
+    = simple_form_for @report do |f|
+      = f.input :name, placeholder: 'My cool report'
+      = f.input :description,
+                hint: 'Why does this report exist? Be descriptive here.',
+                input_html: {data: {autogrow: true}}
+      = f.input :query do
+        = f.input_field :query, data: {codemirror: 'true',
+                                       sql_tables: @schema,
+                                       mode: 'text/x-sql'}
+        = f.hint 'Your database query in raw SQL'
+        .form-text.alert.alert-info
+          %b Heads up!
+          To query the system effectively:
+          %ul
+            %li
+              Use valid SQL, table(s) and column(s). Use
+              %kbd ctrl + space
+              to autocomplete these values while editing your query
+            %li
+              Use a
+              %code LIMIT
+              clause to maintain system stability when running these queries
+            %li
+              You can automatically link to the orders in the results by naming
+              the column with your order IDs
+              %code order_id
+      .form-group
+        %span#js-report-preview.btn.btn-sm.btn-secondary Preview query
+        #js-report-preview-result.report-preview-result.pt-1
+          .text-muted No results
+      = f.input :frequency,
+                collection: Report::FREQUENCIES,
+                hint: 'How often to run this report?',
+                include_blank: 'Manual',
+                label_method: :capitalize
+      = f.input :recipients,
+                hint: 'A comma-separated list of email addresses who will receive this report',
+                placeholder: 'user@idrive.com, user2@idrive.com'
+      %button.btn.btn-primary{type: 'submit',
+                              data: {disable_with: 'Saving'}}
+        = fa_icon 'check', text: 'Save'
+      %a.btn.btn-secondary{href: reports_path}= fa_icon 'ban', text: 'Cancel'

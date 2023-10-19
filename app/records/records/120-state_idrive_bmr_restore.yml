@@ -1,0 +1,335 @@
+model_class: State
+records:
+  -
+    core:
+      key: idrive_bmr_restore_order_created
+    update:
+      active: true
+      is_drive_event: false
+      order_type:
+        key: idrive_bmr_restore
+      notify_by_default: true
+      public_by_default: true
+    create:
+      label: Order created
+      description: >-
+        Your order has been received! We'll start working on it right away.
+      percentage: 14
+  -
+    core:
+      key: idrive_bmr_restore_notify_datacenter
+    update:
+      active: true
+      is_drive_event: false
+      order_type:
+        key: idrive_bmr_restore
+      notify_by_default: false
+      public_by_default: false
+    create:
+      label: Notify datacenter
+      description: >-
+        Please begin processing this order
+      percentage: 15
+  -
+    core:
+      key: idrive_bmr_restore_no_idrive_available
+    update:
+      active: true
+      is_drive_event: false
+      order_type:
+        key: idrive_bmr_restore
+      notify_by_default: false
+      public_by_default: false
+    create:
+      label: No drive available
+      description: >-
+        No drives are available at this datacenter.
+      percentage: 16
+  -
+    core:
+      key: idrive_bmr_restore_status_update
+    update:
+      active: true
+      is_drive_event: false
+      order_type:
+        key: idrive_bmr_restore
+      notify_by_default: false
+      public_by_default: false
+    create:
+      label: Status update
+      description: >-
+        Pre shipping status update. Can be used for internal notes or communicating with the customer.
+      percentage: 25
+  -
+    core:
+      key: idrive_bmr_restore_drive_mounted
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_restore
+      public_by_default: false
+    create:
+      label: Drive mounted on server
+      description: Your drive has been attached to our servers. Your restore
+        will start soon.
+      percentage: 28
+  -
+    core:
+      key: idrive_bmr_restore_drive_not_detected
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_restore
+      public_by_default: false
+    create:
+      label: Drive not detected
+      description: The Express drive is unable to be seen or mounted by the OS.
+        will start soon.
+      percentage: 28
+  -
+    core:
+      key: idrive_bmr_restore_post_shipping_status_update
+    update:
+      active: true
+      is_drive_event: false
+      is_out_of_our_hands: true
+      order_type:
+        key: idrive_bmr_restore
+      notify_by_default: false
+      public_by_default: false
+    create:
+      label: Status update
+      description: >-
+        Post shipping status update. Can be used for internal notes or communicating with the customer.
+      percentage: 25
+  -
+    core:
+      key: idrive_bmr_restore_restore_started
+    update:
+      active: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_restore
+      public_by_default: true
+    create:
+      label: Restore started
+      description: Your data restore has begun.
+      percentage: 42
+  -
+    core:
+      key: idrive_bmr_restore_still_in_progress
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_restore
+      public_by_default: false
+    create:
+      label: Restore still in progress
+      description: Restore is still in progress.
+      percentage: 44
+  -
+    core:
+      key: idrive_bmr_restore_order_restore_restarted
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_restore
+      public_by_default: false
+    create:
+      label: Restore restarted
+      description: Your data restore is still ongoing.
+      percentage: 49
+  -
+    core:
+      key: idrive_bmr_restore_download_complete
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_restore
+      public_by_default: true
+    create:
+      label: Data download complete
+      description: A copy of your data has finished downloading from our servers. We'll be shipping your drive to you soon.
+      percentage: 56
+  -
+    core:
+      key: idrive_bmr_restore_international_shipping
+    update:
+      active: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_restore
+      public_by_default: true
+    create:
+      label: International shipping fee
+      description: >-
+        Thank you for your your interest in using the Express service. Before
+        we process your order, since this is shipping internationally, we
+        wanted to make sure you were aware of the additional shipping costs of
+        the order. In your location, the expected cost for this is $XX.XX USD.
+        Please be advised that this only covers the cost of shipping the drive
+        to you, and not the cost of return shipping.
+
+
+        The charge for shipping would be applied to your IDrive account, on the
+        same card on file. Please reply to this email confirming you accept
+        these charges and we will process your request. If you decline, we will
+        cancel your Express order, but your IDrive account will be unaffected.
+        If you have any questions, please let us know by emailing us at
+        support@idrive.com.
+
+
+        Thanks for using IDrive!
+      percentage: 63
+  -
+    core:
+      key: idrive_bmr_restore_shipping_label_generated
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_restore
+      public_by_default: false
+    create:
+      label: Shipping label generated
+      description: >-
+        USPS sent tracking number: XXXX
+
+
+        USPS return tracking number: XXXX
+      percentage: 70
+  -
+    core:
+      key: idrive_bmr_restore_drive_shipped
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_restore
+      public_by_default: true
+    create:
+      label: Drive shipped
+      description: >-
+        A drive containing a copy of your data has been shipped to you!
+        Your tracking number is XXXXX. Please allow 2-3 days for delivery.
+
+        Please refer to the following link on how to perform your Restore.
+
+        https://www.idrive.com/idrive-express-faq#4
+      percentage: 84
+  -
+    core:
+      key: idrive_bmr_restore_return_delayed
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: true
+      is_out_of_our_hands: true
+      order_type:
+        key: idrive_bmr_restore
+      public_by_default: true
+    create:
+      label: Drive return delayed
+      description: It has been a while since your order has shipped. To avoid
+        being charged for the drive, please ship it back to us as soon as
+        possible.
+      percentage: 91
+  -
+    core:
+      key: idrive_bmr_restore_return_delayed_final
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: true
+      is_out_of_our_hands: true
+      order_type:
+        key: idrive_bmr_restore
+      public_by_default: true
+    create:
+      label: Drive return delayed - final notice
+      description: It has been a while since your order has shipped. To avoid
+        being charged for the drive, please ship it back to us as soon as
+        possible.
+      percentage: 95
+  -
+    core:
+      key: idrive_bmr_restore_charging_replacement_fee
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_restore
+      public_by_default: false
+    create:
+      label: Charging replacement fee for drive
+      description: Charging user replacement fee for the hard drive.
+      percentage: 96
+  -
+    core:
+      key: idrive_bmr_restore_unable_to_charge_replacement_fee
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr_restore
+      public_by_default: false
+    create:
+      label: Unable to charge replacement fee
+      description: We are not able to charge the replacement fee.
+      percentage: 97
+  -
+    core:
+      key: idrive_bmr_restore_order_completed
+    update:
+      active: true
+      notify_by_default: true
+      is_drive_event: true
+      order_type:
+        key: idrive_bmr_restore
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Restore completed
+      description: >-
+        We have received your IDrive BMR Express drive back at our offices. This
+        completes your order. Thank you for using IDrive BMR Express!
+  -
+    core:
+      key: idrive_bmr_restore_order_drive_never_returned
+    update:
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_restore
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Drive never returned
+      description: >-
+        You have been charged for failing to return your IDrive BMR Express drive
+        back to us.
+  -
+    core:
+      key: idrive_bmr_restore_order_cancelled
+    update:
+      active: true
+      is_drive_event: false
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr_restore
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Order cancelled
+      description: Your order has been cancelled.

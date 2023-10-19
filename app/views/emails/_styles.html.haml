@@ -1,0 +1,32 @@
+:scss
+  // client specific styles
+  #outlook a { padding: 0; } // force outlook to provide a "view in browser" message
+  .ReadMsgBody { width: 100%; }
+  .ExternalClass { width: 100%; } // force hotmail to display emails at full width
+  .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } // force hotmail to display normal line spacing
+  body, table, td, p, a, li, blockquote { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; } // prevent webkit and windows mobile changing default text sizes
+  table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; } // remove spacing between tables in outlook 2007 and up
+  img { -ms-interpolation-mode: bicubic; } // allow smoother rendering of resized image in internet explorer
+
+  // reset styles
+  body { margin: 0; padding: 0; #{font_style} }
+  img { border:0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+  table { border-collapse: separate !important; border-spacing: 0 !important; }
+  body { height: 100% !important; margin: 0; padding: 0; width: 100% !important; }
+
+  // mobile
+  @media only screen and (max-width: 601px) {
+    // client-specific mobile styles
+    body, table, td, p, a, li, blockquote { -webkit-text-size-adjust: none !important; } // prevent webkit platforms from changing default text sizes
+    body { width: 100% !important; min-width: 100% !important; } // prevent ios mail from adding padding to the body
+    img { max-width: 100%; }
+
+    // mobile reset styles
+    #body-cell { padding: 0 !important; }
+  }
+  @media only screen and (max-device-width: 600px) {
+    #template-container { border: none !important; max-width:600px !important; width:100% !important; } // prevent yahoo from applying these styles on the desktop
+  }
+  @media only screen and (min-device-width: 601px) {
+    #template-container { width: 600px !important; } // apple mail doesn't respect max-width
+  }

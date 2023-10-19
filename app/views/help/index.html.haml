@@ -1,0 +1,14 @@
+- content_for :title, 'Help'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item.active= fa_icon 'question-circle', text: yield(:title)
+
+%h1= yield(:title)
+%p
+  Get assistance, tips and examples for how to use various parts of the site.
+  Select a page below to get started.
+
+%h3 Topics
+%ul
+  - for page in @pages
+    %li
+      %a{href: help_path(page.dasherize)}= page.humanize

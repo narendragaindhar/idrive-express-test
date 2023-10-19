@@ -1,0 +1,77 @@
+model_class: State
+records:
+  -
+    core:
+      key: idrive360_upload_order_created
+    update:
+      active: true
+      is_drive_event: false
+      notify_by_default: true
+      order_type:
+        key: idrive360_upload
+      public_by_default: true
+    create:
+      label: Order created
+      description: Your IDrive360 Express order has been received
+      percentage: 14
+  -
+    core:
+      key: idrive360_upload_order_drive_return_delayed
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive360_upload
+      public_by_default: true
+    create:
+      label: Drive return delayed
+      description: >-
+        It has been a while since your order has shipped. To avoid being
+        charged for the drive, please ship it back to us as soon as possible.
+      percentage: 49
+  -
+    core:
+      key: idrive360_upload_order_upload_restarted
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: false
+      order_type:
+        key: idrive360_upload
+      public_by_default: false
+    create:
+      label: Upload restarted
+      description: Your data upload is still ongoing.
+      percentage: 91
+  -
+    core:
+      key: idrive360_upload_order_completed
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive360_upload
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Upload completed
+      description: >-
+        Your IDrive360 Express order is complete. You can now access your data in
+        your account!
+  -
+    core:
+      key: idrive360_upload_order_drive_never_returned
+    update:
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive360_upload
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Drive never returned
+      description: >-
+        You have been charged due to failure to return your IDrive360 Express
+        drive back to us.

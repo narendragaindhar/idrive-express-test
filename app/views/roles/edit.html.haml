@@ -1,0 +1,23 @@
+- content_for :title, "Editing roles for #{@user.name}"
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a{href: users_path}= fa_icon 'group', text: 'Users'
+  %li.breadcrumb-item
+    %a{href: user_path(@user)}= @user.name
+  %li.breadcrumb-item.active Edit Roles
+
+.row
+  .col-sm-10.offset-sm-1.col-md-8.offset-md-2.col-lg-6.offset-lg-3
+    = simple_form_for @user, url: user_roles_path(@user), html: {class: 'card'} do |f|
+      .card-header
+        %b= yield :title
+      .card-block
+        = f.label :roles
+        = hidden_field_tag 'user[roles][]', nil, id: :user_roles
+        - for role in @roles
+          .form-check
+            %label.form-check-label
+              = check_box_tag 'user[roles][]', role.id, @chosen_roles.collect(&:id).include?(role.id), id: "user_roles_#{role.id}", class: 'form-check-input'
+              = "#{role.name} - #{role.description}"
+      .card-footer
+        %button.btn.btn-primary{type: 'submit', data: {disable_with: 'Saving...'}} Save

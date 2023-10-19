@@ -1,0 +1,20 @@
+- if params[:q].present? && (params['q'].include?('day_count') || params['q'].include?('priority')|| params['q'].include?('order_updated'))
+  - content_for :title, make_title('My orders', sort: params[:q])
+- else
+  - content_for :title, make_title('My orders', search: params[:q])
+- content_for :heading, 'My orders'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item{class: ('active' if not params[:q].present?)}
+    - if params[:q].present?
+      %a{href: my_orders_path}= fa_icon 'cubes', text: 'My orders'
+    - else
+      = fa_icon 'cubes', text: 'My orders'
+  - if params[:q].present?
+    - if params['q'].include?('day_count') || params['q'].include?('priority')|| params['q'].include?('order_updated')
+      %li.breadcrumb-item.active
+        Sort: #{params[:q]}
+    - else
+      %li.breadcrumb-item.active
+        Search: #{params[:q]}
+
+= render 'list'

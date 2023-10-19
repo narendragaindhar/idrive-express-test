@@ -1,0 +1,11 @@
+model_class: Product
+records:
+  -
+    core:
+      name: IDrive
+  -
+    core:
+      name: IBackup
+  -
+    core:
+      name: IDrive360

@@ -1,0 +1,13 @@
+- content_for :title, "Editing user: #{@user.name}"
+- content_for :heading, 'Edit User'
+- content_for :subheading, @user.name
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a{href: users_path}= fa_icon 'group', text: 'Users'
+  %li.breadcrumb-item
+    %a{href: user_path(@user)}= @user.name
+  %li.breadcrumb-item.active Edit
+
+.row
+  .col-sm-10.offset-sm-1.col-md-8.offset-md-2.col-lg-6.offset-lg-3
+    = render 'form', action: 'edit', modal: false

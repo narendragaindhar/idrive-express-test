@@ -1,0 +1,36 @@
+.card
+  .card-header
+    %strong Customer information
+  %ul.list-group.list-group-flush
+    %li.list-group-item.text-break
+      %strong Username
+      = @customer.username
+    %li.list-group-item.text-break
+      %strong Email
+      = @customer.email
+    %li.list-group-item.text-break
+      %strong Name
+      = @customer.name
+    %li.list-group-item
+      %strong Customer since
+      = @customer.created_at.strftime('%B %e, %Y')
+    %li.list-group-item.text-break
+      %strong Phone
+      - if @customer.phone.present?
+        = @customer.human_phone
+      - else
+        %span.text-muted None
+    %li.list-group-item{title: "Priority: #{@customer.priority}"}
+      %strong Priority
+      - if @customer.high_priority?
+        %span.text-danger High
+      - elsif @customer.normal_priority?
+        Normal
+      - else
+        %span.text-muted No
+    %li.list-group-item
+      %strong Quota
+      = @customer.human_quota
+    %li.list-group-item
+      %strong EVS server
+      = @customer.server

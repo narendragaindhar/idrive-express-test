@@ -1,0 +1,11 @@
+:plain
+  Hello #{@user.name},
+  You now have an IDrive Express account. To finish creating your account:
+
+  1) Set a password for your account:
+  #{edit_password_url @user.reset_password_token}
+
+  2) Login to your account using your email and password:
+  #{login_url}
+
+  Once logged in, you can start managing orders as well as manage your account details.

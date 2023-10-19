@@ -1,0 +1,62 @@
+model_class: State
+records:
+  -
+    core:
+      key: restore_order_created
+    update:
+      active: true
+      is_drive_event: false
+      notify_by_default: true
+      order_type:
+        key: idrive_restore
+      public_by_default: true
+    create:
+      label: Order created
+      description: Your IDrive Express restore order has been received
+      percentage: 14
+  -
+    core:
+      key: restore_order_completed
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive_restore
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Restore completed
+      description: >-
+        We have received your IDrive Express drive back at our offices. This
+        completes your order. Thank you for using IDrive Express!
+  -
+    core:
+      key: restore_order_cancelled
+    update:
+      active: true
+      is_drive_event: false
+      notify_by_default: true
+      order_type:
+        key: idrive_restore
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Order cancelled
+      description: Your order has been cancelled
+
+  -
+    core:
+      key: restore_order_drive_never_returned
+    update:
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive_restore
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Drive never returned
+      description: >-
+        You have been charged due to failure to return your IDrive Express
+        drive back to us.

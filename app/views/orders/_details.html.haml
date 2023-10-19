@@ -1,0 +1,54 @@
+.card
+  .card-header
+    %strong Order information
+    - if policy(@order).edit?
+      %a{href: edit_order_path(@order)} Edit
+  %ul.list-group.list-group-flush
+    %li.list-group-item
+      %strong Order type
+      = @order_type.full_name
+    %li.list-group-item
+      %strong Size
+      = @order.humanize_size
+      - if @order.order_type.key_is? :idrive_one
+        = @order.comments
+    %li.list-group-item
+      %strong Drive
+      - if @drive
+        = @drive.label(short: true)
+        \-
+        = @drive.humanize_size
+      - else
+        %span.text-muted None
+        - if policy(@order).edit?
+          \-
+          %a{href: edit_order_path(@order)} Add
+    - if @order.needs_review
+      %li.list-group-item
+        %strong
+          Needs review
+        %p.mb-0
+          %em This order has been flagged for review. It is best to check the account status and clear this prior to shipping the drive.
+    - unless @order.order_type.key_is? :idrive_one
+      %li.list-group-item
+        %strong Operating system
+        - if @order.os.present?
+          = @order.os
+        - else
+          %span.text-muted None
+    %li.list-group-item
+      %strong Created
+      = render 'dates/friendly_date', date_time: @order.created_at
+    %li.list-group-item
+      %strong Last updated
+      = render 'dates/friendly_date', date_time: @order.updated_at
+    %li.list-group-item{class: "#{order_row_class(@order)} #{day_count_stale_class(@order)}", data: {order_id: @order.id}}
+      %strong Days active
+      = render 'day_counts/day_count', order: @order
+    - unless @order.order_type.key_is? :idrive_one
+      %li.list-group-item
+        %strong Customer comments
+        - if @order.comments.present?
+          %blockquote.text-plain.mb-0= auto_link_to_ticketing(@order.comments)
+        - else
+          %span.text-muted None

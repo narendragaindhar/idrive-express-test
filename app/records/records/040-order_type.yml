@@ -1,0 +1,82 @@
+model_class: OrderType
+records:
+  -
+    core:
+      key: idrive_upload
+    update:
+      name: Express Upload
+    create:
+      product:
+        name: IDrive
+  -
+    core:
+      key: idrive_restore
+    update:
+      name: Express Restore
+    create:
+      product:
+        name: IDrive
+  -
+    core:
+      key: idrive_one
+    update:
+      name: One
+    create:
+      product:
+        name: IDrive
+  -
+    core:
+      key: idrive_bmr
+    update:
+      name: BMR
+    create:
+      product:
+        name: IDrive
+  -
+    core:
+      key: idrive_bmr_upload
+    update:
+      name: BMR Express Upload
+    create:
+      product:
+        name: IDrive
+  -
+    core:
+      key: idrive_bmr_restore
+    update:
+      name: BMR Express Restore
+    create:
+      product:
+        name: IDrive
+  -
+    core:
+      key: idrive360_upload
+    update:
+      name: Express Upload
+    create:
+      product:
+        name: IDrive360
+  -
+    core:
+      key: idrive360_restore
+    update:
+      name: Express Restore
+    create:
+      product:
+        name: IDrive360
+  -
+    core:
+      key: ibackup_upload
+    update:
+      name: Express Upload
+    create:
+      product:
+        name: IBackup
+  -
+    core:
+      key: ibackup_restore
+    update:
+      name: Express Restore
+    create:
+      product:
+        name: IBackup

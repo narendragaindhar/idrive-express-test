@@ -1,0 +1,12 @@
+= simple_form_for @user, url: (@user.new_record? ? users_path : user_path(@user)) do |f|
+  = f.input :name
+  = f.input :email
+  - if not @user.new_record? and policy(@user).update?
+    = f.input :password
+    = f.input :password_confirmation
+
+  %button.btn.btn-primary{type: 'submit', data: {disable_with: 'Saving...'}}= fa_icon 'check', text: 'Save All'
+  - if modal
+    %button.btn.btn-secondary{type: 'button', data: {dismiss: 'modal'}}= fa_icon 'ban', text: 'Cancel'
+  - else
+    %a.btn.btn-secondary{href: (@user.new_record? ? users_path : user_path(@user))}= fa_icon 'ban', text: 'Cancel'

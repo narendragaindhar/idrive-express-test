@@ -1,0 +1,77 @@
+%nav.navbar.navbar-light.px-0.row
+  .col-xs-12.col-lg-6
+    %button.navbar-toggler.float-xs-right.hidden-md-up{type: 'button', data: {toggle: 'collapse', target: '#main-nav-navbar'}, aria: {controls: 'main-nav-navbar', expanded: 'false', label: 'Toggle navigation'}}
+    %a.navbar-brand.main-nav-navbar-brand{href: root_path}
+      %img.d-inline-block.align-top{src: image_path('logo.png'), alt: 'Express', width: 30, height: 30}
+      Express
+
+    .collapse.navbar-toggleable-sm#main-nav-navbar
+      .nav.navbar-nav
+        - if logged_in?
+          %a.nav-item.nav-link{href: orders_path, class: ('active' if request.path == orders_path)}
+            All Orders
+            - if request.path == orders_path
+              %span.sr-only (current)
+          %a.nav-item.nav-link{href: my_orders_path, class: ('active' if request.path == my_orders_path)}
+            My orders
+            - if request.path == my_orders_path
+              %span.sr-only (current)
+          - if policy(:order).new?
+            %a.nav-item.nav-link{href: new_order_path, class: ('active' if request.path == new_order_path)}
+              New order
+          - if policy(:admin).manage?
+            %a.nav-item.nav-link{href: rails_admin.dashboard_path, data: {turbolinks: 'false'}}
+              Admin
+          - currently_more_path = request.path.starts_with?(users_path) || |
+            request.path.starts_with?(helps_path) || |
+            request.path.starts_with?(reports_path) |
+          .nav-item.dropdown
+            %a.nav-link.dropdown-toggle{href: '#', class: ('active' if currently_more_path), id: 'main-nav-user-dropdown-link', data: {toggle: 'dropdown'}, aria: {haspopup: 'true', expanded: 'false'}}
+              More
+              - if currently_more_path
+                %span.sr-only (current)
+            .dropdown-menu.dropdown-menu-right{aria:{labelledby: 'main-nav-user-dropdown-link'}}
+              - if policy(:report).index?
+                %a.dropdown-item{href: reports_path} Reports
+              - if policy(:user).index?
+                %a.dropdown-item{href: users_path} Users
+              %a.dropdown-item{href: user_path(current_user)} My profile
+              %a.dropdown-item{href: helps_path} Help
+              %a.dropdown-item{href: logout_path} Log out
+        - else
+          %a.nav-item.nav-link{href: login_path, class: ('active' if request.path.starts_with?(login_path))}
+            Log in
+            - if request.path.starts_with?(login_path)
+              %span.sr-only (current)
+          %a.nav-item.nav-link{href: new_password_path, class: ('active' if request.path.starts_with?(passwords_path))}
+            Forgot password
+            - if request.path.starts_with?(passwords_path)
+              %span.sr-only (current)
+  - if logged_in?
+    .col-xs-12.col-lg-6
+      = form_tag(send(@orders_path_sym), method: :get) do
+        .input-group
+          .input-group-btn
+            %button.btn.btn-secondary.dropdown-toggle{type: 'button', data: {toggle: 'dropdown'}, aria: {haspopup: 'true', expanded: 'false'}}
+              %span.hidden-sm-up
+                %i.fa.fa-filter
+              %span.hidden-xs-down
+                Filters
+            .dropdown-menu.main-nav-predefined-searches
+              %a.dropdown-item{href: send(@orders_path_sym, q: 'created:today'), data: {query: 'created:today'}} Orders created today
+              - a_week_ago = (Time.zone.now - 7.days).strftime('%Y-%m-%d')
+              %a.dropdown-item{href: send(@orders_path_sym, q: "is:open updated:<#{a_week_ago}")} Orders that haven't been updated in a week
+              - a_month_ago = (Time.zone.now - 30.days).strftime('%Y-%m-%d')
+              %a.dropdown-item{href: send(@orders_path_sym, q: "is:open updated:<#{a_month_ago}")} Orders that haven't been updated in a month
+              %a.dropdown-item{href: send(@orders_path_sym, q: 'size:1tb order_type:idrive-one created:today state:"account verification ok"')} 1TB IDrive One orders created today
+              .dropdown-divider{role: 'separator'}
+              %a.dropdown-item{href: help_path('searching-orders')} How to search orders
+              %a.dropdown-item{href: help_path('search-syntax')} Search syntax
+          %label.sr-only#q Search
+          - params[:q] = '' if params['q'].present? && (params['q'].include?('day_count') || params['q'].include?('priority')|| params['q'].include?('order_updated'))
+          = text_field_tag :q, params[:q], class: 'form-control', placeholder: "Search #{@orders_path_sym == :my_orders_path ? 'my ': ''}orders...", required: true
+          .input-group-btn
+            = button_tag type: 'submit', name: nil, class: 'btn btn-secondary' do
+              %i.fa.fa-search
+              %span.hidden-xs-down
+                Search

@@ -1,0 +1,42 @@
+.card.mb-2
+  .card-header
+    %b
+      = "Order Updates (#{@order_states.size})"
+  %ul.list-group.list-group-flush
+    - if @order_states.empty?
+      %li.list-group-item.text-xs-center
+        No activity here...
+
+    - else
+      - for order_state in @order_states
+        %li.list-group-item
+          .row
+            .col-md-8.col-xl-7
+              %h6.order-state-header
+                %strong= order_state.state.label
+                %span.text-muted
+                  on
+                  = render 'dates/friendly_date', date_time: order_state.created_at
+                  - update_sep = order_state.updated_at > order_state.created_at ? ', ' : ''
+                  = "#{order_state.user.present? ? "by #{order_state.user.name}" : ''}#{update_sep}"
+                  - if update_sep.present?
+                    updated
+                    = render 'dates/friendly_date', date_time: order_state.updated_at
+                  - if order_state.private?
+                    %span.tag.tag-default{title: 'This update is only visible internally on this site'} Private note
+              %p.text-plain.order-state-comments= auto_link_to_ticketing(order_state.comments)
+            .col-md-4.col-lg-3.offset-lg-1.offset-xl-2
+              %ul.list-unstyled
+                %li
+                  = fa_icon boolean_icon(order_state.did_notify?), class: 'fa-fw'
+                  Customer
+                  = order_state.did_notify? ? '' : 'not'
+                  notified
+                %li
+                  = fa_icon boolean_icon(order_state.is_public?), class: 'fa-fw'
+                  IDrive
+                  = order_state.is_public? ? '' : 'not'
+                  updated
+
+- if policy(@order).update?
+  = render 'states/form'

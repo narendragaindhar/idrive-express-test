@@ -1,0 +1,53 @@
+-# reports/show.html.haml
+
+- content_for :title, @report.name
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a{href: reports_path}= fa_icon 'area-chart', text: 'Reports'
+  %li.breadcrumb-item.active= yield :title
+
+%h2
+  = @report.name
+  %small
+    %a{href: edit_report_path(@report)} Edit
+
+%p.text-muted
+  = "Created #{time_ago_in_words(@report.created_at)} ago,"
+  = "updated #{time_ago_in_words(@report.updated_at)} ago"
+
+.btn-group.btn-group-sm.mb-1{role: 'group', aria_label: 'Report actions'}
+  - if @report.recipients.present?
+    %a.btn.btn-secondary{href: run_report_path(@report)} Email report
+  - else
+    %span.btn.btn-secondary.disabled{title: 'Add recipients to email a report'} Email report
+  = link_to 'Delete report', @report, class: 'btn btn-secondary',
+                             data: {confirm: 'Are you sure?'},
+                             method: :delete
+
+%dl
+  %dt Description
+  - if @report.description.present?
+    %dd.text-plain= @report.description
+  - else
+    %dd.text-muted No description
+  %dt Frequency
+  - if @report.frequency.present?
+    %dd= "Runs #{@report.frequency}"
+  - else
+    %dd.text-muted Manual
+  %dt Recipients
+  - if @report.recipients.present?
+    %dd= @report.recipients_list.to_sentence
+  - else
+    %dd.text-muted None
+
+%h4 Query
+%textarea{data: {codemirror: 'true', mode: 'text/x-sql', readonly: 'nocursor'}}= @report.query
+%br
+
+%div
+  %span#js-report-run.btn.btn-sm.btn-secondary{data: {result_url: run_report_path(@report, format: :json)}} Refresh
+  #js-report-run-result.pt-1
+    %p.text-xs-center.text-muted
+      = fa_icon 'circle-o-notch', class: 'fa-spin'
+      Loading...

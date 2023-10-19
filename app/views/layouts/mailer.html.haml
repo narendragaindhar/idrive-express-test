@@ -1,0 +1,82 @@
+- if @order.present? and @order.order_type.product.is? :ibackup
+  - product = 'IBackup'
+  - company = 'Pro Softnet Corporation'
+  - url = 'https://www.ibackup.com'
+  - email = 'support@ibackup.com'
+  - social = false
+- else
+  - product = 'IDrive'
+  - company = "#{product} Inc."
+  - url = 'https://www.idrive.com'
+  - email = 'support@idrive.com'
+  - social = true
+!!!
+%html
+  %head
+    %meta{charset: 'utf-8'}/
+    %title= @subject
+    = render 'emails/styles'
+  %body{bgcolor: '#ffffff', leftmargin: '0', marginwidth: '0', topmargin: '0', marginheight: '0', offset: '0'}
+    %center
+      = render layout: 'emails/table', locals: {additional_style: "#{font_style} background: #e5e5e5;"} do
+        %tr
+          = render layout: 'emails/td', locals: {align: 'center'} do
+            -# we must display a fixed width table for outlook cuz its dumb
+            -# don't mess w/ this unless you know what you are doing!
+            <!--[if (gte mso 9)|(IE)]>
+            <table width="604" border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; border-spacing: 0; line-height: inherit;"><tr><td>
+            <![endif]-->
+            = render layout: 'emails/table', locals: {additional_style: 'max-width: 600px;', additional_attrs: {height: '100%', align: 'center', id: 'body-table'}} do
+              %tr
+                = render layout: 'emails/td', locals: {align: 'center', additional_attrs: {id: 'body-cell'} } do
+                  = render layout: 'emails/table', locals: {additional_style: 'border: 1px solid #ccc; margin: 0 auto; background: #fff;', additional_attrs: {id: 'template-container'}} do
+                    %tr
+                      = render layout: 'emails/td', locals: {additional_style: 'padding: 15px;'} do
+                        = render layout: 'emails/table' do
+                          %tr
+                            = render layout: 'emails/td' do
+                              %a{href: url}
+                                %img{src: image_url("email/#{product.downcase}/header.png"), width: 113, height: 45, alt: "#{product} #{url}"}
+                            = render layout: 'emails/td', locals: {align: 'right', valign: 'middle'} do
+                              = render layout: 'emails/a', locals: {href: url} do
+                                #{url}
+                    %tr
+                      = render layout: 'emails/td', locals: {additional_style: 'padding: 5px 15px 15px;'} do
+                        = yield
+
+                        = render layout: 'emails/p' do
+                          Thanks,
+                          %br
+                          The #{product} Team
+
+                        = render 'emails/hr'
+                        = render layout: 'emails/p', locals: {additional_style: 'color: #777777; text-align: center;'} do
+                          Need more help? Contact us at
+                          = render layout: 'emails/a', locals: {href: "mailto:#{email}", color: '#66a440'} do
+                            = email
+
+                        = render 'emails/hr'
+                        = render layout: 'emails/table' do
+                          %tr
+                            = render layout: 'emails/td', locals: {align: (social ? 'left': 'center'), valign: 'middle', additional_style: 'font-size: .9em; color: #999999;'} do
+                              ©
+                              = render layout: 'emails/a', locals: {href: url, color: '#999999'} do
+                                #{company}
+                            -# in reality, only idrive has a social presence
+                            - if social
+                              = render layout: 'emails/td', locals: {width: 35, align: 'right'} do
+                                %a{href: 'https://www.facebook.com/IDriveBackup', title: 'Like IDrive on Facebook'}
+                                  %img{src: image_url('email/facebook.png'), width: 32, height: 32, alt: 'Facebook'}
+                              = render layout: 'emails/td', locals: {width: 35, align: 'right'} do
+                                %a{href: 'https://twitter.com/IDriveBackup', title: 'Follow @IDriveBackup on Twitter'}
+                                  %img{src: image_url('email/twitter.png'), width: 32, height: 32, alt: 'Twitter'}
+                              = render layout: 'emails/td', locals: {width: 35, align: 'right'} do
+                                %a{href: 'https://www.linkedin.com/company/idrive', title: 'Connect with IDrive on LinkedIn'}
+                                  %img{src: image_url('email/linked-in.png'), width: 32, height: 32, alt: 'LinkedIn'}
+                              = render layout: 'emails/td', locals: {width: 35, align: 'right'} do
+                                %a{href: 'http://blog.idrive.com/', title: 'Read the IDrive blog'}
+                                  %img{src: image_url('email/blog.png'), width: 32, height: 32, alt: 'Blog'}
+            -# ending outlook table
+            <!--[if (gte mso 9)|(IE)]>
+            </td></tr></table>
+            <![endif]-->

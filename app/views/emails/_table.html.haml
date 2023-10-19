@@ -1,0 +1,9 @@
+-# <table> tag for emails
+- width = local_assigns.fetch :width, '100%'
+- border = local_assigns.fetch :border, '0'
+- cellpadding = local_assigns.fetch :cellpadding, '0'
+- cellspacing = local_assigns.fetch :cellspacing, '0'
+- additional_style = local_assigns.fetch :additional_style, ''
+- additional_attrs = local_assigns.fetch :additional_attrs, {}
+%table{{width: width, border: border, cellpadding: cellpadding, cellspacing: cellspacing, style: "border-collapse: separate; border-spacing: 0; line-height: inherit; #{additional_style}"}, additional_attrs}
+  = yield

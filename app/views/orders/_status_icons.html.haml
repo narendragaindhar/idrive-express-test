@@ -1,0 +1,28 @@
+-# fancy status icons for orders listing
+
+- if order.percentage == 100
+  %i.fa.fa-fw.fa-check-circle.text-success{title: "Order completed on #{order.created_at.strftime('%B %e, %Y at %l:%M:%S%P')}"}
+- else
+  %i.fa.fa-fw.fa-dot-circle-o{title: 'Order in progress'}
+
+= render 'day_counts/day_count', :order => order
+
+- if order.created_at > 1.day.ago and order.order_states.size < 2
+  %i.fa.fa-fw.fa-bell-o{title: 'New order'}
+
+- if order.customer.high_priority?
+  %i.fa.fa-fw.fa-star.text-danger{title: 'High priority order'}
+- elsif order.customer.normal_priority?
+  %i.fa.fa-fw.fa-star{title: 'Priority order'}
+
+- if order.needs_review
+  %i.fa.fa-fw.fa-flag-o{title: 'This order\'s account should be reviewed before shipping'}
+
+- if order.drive.present?
+  %i.fa.fa-fw.fa-hdd-o{title: "#{order.percentage < 100 ? 'Using' : 'Used'} drive #{order.drive.label(short: true)}"}
+
+- if order.address.outside_usa?
+  %i.fa.fa-fw.fa-map-o{title: "International order (#{order.address.country})"}
+
+- if order.customer.more_than_one_open_order?
+  %i.fa.fa-fw.fa-user-plus{title: 'The customer has multiple open orders'}

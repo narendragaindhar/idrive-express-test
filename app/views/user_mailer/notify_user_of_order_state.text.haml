@@ -1,0 +1,11 @@
+:plain
+  Hello #{@user.name},
+  #{@order_state.user.name} wanted to make you aware of a recent change to order ##{@order_state.order.id}.
+  The order's new state is "#{@order_state.state.label}".
+-if @order_state.comments.present?
+  :plain
+    Comments:
+    #{@order_state.comments}
+:plain
+  View Order ##{@order_state.order.id}:
+  #{order_url(@order_state.order)}

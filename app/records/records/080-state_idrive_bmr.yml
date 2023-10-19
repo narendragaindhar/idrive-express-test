@@ -1,0 +1,136 @@
+model_class: State
+records:
+  -
+    core:
+      key: idrive_bmr_order_created
+    update:
+      active: true
+      is_drive_event: false
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr
+      public_by_default: true
+    create:
+      label: Order created
+      description: >-
+        We have received your order and have started processing it. It will
+        ship soon!
+      percentage: 20
+  -
+    core:
+      key: idrive_bmr_hardware_assembled
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr
+      public_by_default: false
+    create:
+      label: Hardware assembled
+      description: >-
+        BMR hardware has been assembled and is awaiting software
+        installation and configuration.
+
+
+        Server details:
+
+
+        Storage size: 6TB
+
+        Physical size: 1U
+
+        HDD count:
+
+        HDD 1 serial:
+
+        HDD 2 serial:
+
+        HDD 3 serial:
+
+        HDD 4 serial:
+
+        RAM: 16GB
+
+        NICs: 1GB
+      percentage: 40
+  -
+    core:
+      key: idrive_bmr_status_update
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr
+      public_by_default: false
+    create:
+      label: Status update
+      description: Update the customer or add internal notes about the order.
+      percentage: 50
+  -
+    core:
+      key: idrive_bmr_os_install
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr
+      public_by_default: false
+    create:
+      label: OS installed
+      description: >-
+        OS and core system software has been installed and configured.
+
+
+        Software details:
+
+
+        BMR firmware version: XXXX
+
+        Autoupdates: Yes
+
+        Auto port: Yes
+
+        Time zone: XXXX
+      percentage: 60
+  -
+    core:
+      key: idrive_bmr_shipping_label_generated
+    update:
+      active: true
+      notify_by_default: false
+      order_type:
+        key: idrive_bmr
+      public_by_default: false
+    create:
+      label: Shipping label generated
+      description: "USPS tracking number: XXXX"
+      percentage: 80
+  -
+    core:
+      key: idrive_bmr_order_shipped
+    update:
+      active: true
+      is_drive_event: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Order shipped
+      description: >-
+        Your IDrive BMR has been shipped and your order is complete! Your
+        tracking number is XXXXX. Please allow 2-3 days for delivery.
+  -
+    core:
+      key: idrive_bmr_order_cancelled
+    update:
+      active: true
+      notify_by_default: true
+      order_type:
+        key: idrive_bmr
+      percentage: 100
+      public_by_default: true
+    create:
+      label: Order cancelled
+      description: Your order has been cancelled.

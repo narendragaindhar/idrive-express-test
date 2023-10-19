@@ -1,0 +1,19 @@
+= render layout: 'emails/p' do
+  = "Hello #{@user.name},"
+= render layout: 'emails/p' do
+  #{@order_state.user.name} wanted to make you aware of a recent change to
+  = succeed '.' do
+    = render layout: 'emails/a', locals: {href: order_url(@order_state.order)} do
+      order ##{@order_state.order.id}
+  The order's new state is
+  %strong "#{@order_state.state.label}".
+- if @order_state.comments.present?
+  = render layout: 'emails/p' do
+    Comments:
+  = render layout: 'emails/table', locals: {additional_style: margin_bottom} do
+    %tr
+      = render layout: 'emails/td', locals: {additional_style: "border-left: 5px solid #bbbbbb; padding-left: 10px; #{text_plain}"} do
+        = @order_state.comments
+= render layout: 'emails/p' do
+  = render layout: 'emails/a', locals: {href: order_url(@order_state.order)} do
+    = "View order ##{@order_state.order.id} »"

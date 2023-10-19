@@ -1,0 +1,17 @@
+- if drive_events.empty?
+  .panel.panel-info
+    .panel-body No Events
+
+- else
+  - for drive_event in drive_events
+    .panel.panel-info
+      .panel-heading
+        - if drive_event.user.present?
+          %a{href: Rails.application.routes.url_helpers.user_path(drive_event.user)}= drive_event.user.name
+        = nice_date_time drive_event.created_at, include_time: true, show_today: false, show_on_or_at: true
+      .panel-body
+        .text-plain= drive_event.event
+      .panel-footer
+        %a{href: RailsAdmin::Engine.routes.url_helpers.show_path('drive_event', drive_event.id)} View Drive Event
+
+%a.btn.btn-primary{href: rails_admin.new_path(model_name: :drive_event, drive_event: {drive_id: drive_id})} New Drive Event

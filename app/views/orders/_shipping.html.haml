@@ -1,0 +1,60 @@
+.card
+  .card-header
+    %strong Shipping Information
+    %a.btn.btn-primary.btn-sm.pull-xs-right{href: order_path(@order, format: :csv), data: {toggle: 'modal', target: '#js-order-csv-modal'}} CSV
+  %ul.list-group.list-group-flush
+    %li.list-group-item
+      %strong Shipping Address
+      %br
+      %address.mb-0
+        -if @address.recipient.present?
+          = @address.recipient
+          %br
+        -if @address.organization.present?
+          = @address.organization
+          %br
+        = @address.address
+        %br
+        = @address.location_line
+        %br
+        = @address.country
+    %li.list-group-item
+      %strong
+        Return Address
+        = "(#{@destination.name})"
+      %br
+      %address.mb-0
+        -if @destination.address.recipient.present?
+          = @destination.address.recipient
+          %br
+        -if @destination.address.organization.present?
+          = @destination.address.organization
+          %br
+        = @destination.address.address
+        %br
+        = @destination.address.location_line
+        %br
+        = @destination.address.country
+
+-# csv
+.modal.fade{id: 'js-order-csv-modal', aria_labelledby: '#modal-form-label', role: 'dialog', tabindex: '-1'}
+  .modal-dialog{role: 'document'}
+    .modal-content
+      .modal-header
+        %button.close{type: 'button', data: {dismiss: 'modal'}, aria_label: 'Close'}
+          %span{aria_hidden: 'true'}
+            %i.fa.fa-fw.fa-times
+          %span.sr-only Close
+        %h4#modal-form-label.modal-title
+          CSV for order ##{@order.id}
+      .modal-body
+        %p This CSV formatted text can be copy/pasted into any spreadsheet:
+        %input#js-order-csv-input.form-control.form-control-lg{type: 'text', value: @order.to_csv}
+      .modal-footer
+        %nav.nav-inline
+          %a.nav-link{href: order_path(@order, format: :csv), target: '_blank'}
+            %i.fa.fa-fw.fa-external-link
+            View on new page
+          %a.nav-link{href: order_path(@order, format: :csv, download: true)}
+            %i.fa.fa-fw.fa-download
+            Download as CSV

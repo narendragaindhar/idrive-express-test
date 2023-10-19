@@ -1,0 +1,9 @@
+- if @customer.name
+  = render layout: 'emails/p' do
+    = "Hello #{@customer.name},"
+= render layout: 'emails/p' do
+  Your #{@order.order_type.full_name} order (##{@order.id}) was updated:
+  %strong= @state.label
+- if @order_state.comments.present?
+  = render layout: 'emails/p', locals: {additional_style: text_plain} do
+    = @order_state.comments

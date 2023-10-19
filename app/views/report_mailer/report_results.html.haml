@@ -1,0 +1,35 @@
+= render layout: 'emails/p' do
+  %strong Report:
+  = @report.name
+
+- if @report.description.present?
+  = render layout: 'emails/p', locals: {additional_style: text_plain} do
+    = @report.description
+
+= render layout: 'emails/p' do
+  %strong Results:
+  = @report.result_count
+
+- td_padding = 'padding: 4px;'
+= render layout: 'emails/table', locals: {width: 'auto', additional_style: "#{margin_bottom} max-width: 100%; border: 1px solid #dddddd;"} do
+  %thead
+    %tr
+      - @report.result.columns.each do |column|
+        = render layout: 'emails/td', locals: {additional_style: td_padding} do
+          %strong= column.humanize
+  %tbody
+    - if @report.result_count.positive?
+      - order_id_index = @report.result.columns.index('order_id')
+      - @report.result.rows.each do |row|
+        %tr
+          - row.each_with_index do |value, i|
+            = render layout: 'emails/td', locals: {additional_style: "#{td_padding} border-top: 1px solid #dddddd;"} do
+              - if order_id_index == i && value.is_a?(Integer)
+                = render layout: 'emails/a', locals: {href: order_url(value)} do
+                  = value
+              - else
+                = value
+    - else
+      %tr
+        = render layout: 'emails/td', locals: {additional_attrs: {colspan: @report.result.columns.size}, additional_style: "#{td_padding} border-top: 1px solid #dddddd;"} do
+          No results

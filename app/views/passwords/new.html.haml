@@ -1,0 +1,6 @@
+- content_for :title, 'Forgot password'
+- content_for :heading, 'Forgot password'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item.active= fa_icon 'key', text: 'Forgot password'
+
+= render 'form'

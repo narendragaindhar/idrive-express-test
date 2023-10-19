@@ -1,0 +1,48 @@
+model_class: Address
+records:
+  -
+    core:
+      recipient: IDrive Express
+      organization: IDrive
+      address: 26115 Mureau Road, Suite A
+      city: Calabasas
+      state: CA
+      zip: 91302
+      country: USA
+  -
+    core:
+      recipient: IDrive
+      organization: Viawest
+      address: 3935 NW Aloclek Place Bldg. D
+      city: Hillsboro
+      state: OR
+      zip: 97124
+      country: USA
+  -
+    core:
+      recipient: IDrive Express
+      organization: "Quadranet ATTN: IDrive"
+      address: 6171 W Century Blvd
+      city: Los Angeles
+      state: CA
+      zip: 90045
+      country: USA
+  -
+    core:
+      recipient: IDrive Inc
+      organization: "Iron Mountain Data Center"
+      address: 11680 HAYDEN RD
+      city: MANASSAS
+      state: VA
+      zip: 20109
+      country: USA
+  -
+    core:
+      recipient: IDrive Inc
+      organization: "Viatel"
+      address: Unit 1, College Business & Technology Park, Bóthar Bhaile Bhlainséir Thuaidh
+      city: Ballycoolen
+      state: Dublin 15
+      zip: D15 PEC4
+      country: Ireland
+      

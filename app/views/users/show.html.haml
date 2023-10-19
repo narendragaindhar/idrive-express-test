@@ -1,0 +1,126 @@
+- content_for :title, "#{@user.name} Details"
+- content_for :heading, @user.name
+- content_for :subheading, 'Details'
+- content_for :breadcrumbs do
+  %li.breadcrumb-item
+    %a{href: users_path}= fa_icon 'group', text: 'Users'
+  %li.breadcrumb-item.active= @user.name
+
+.row
+  .col-sm-10.offset-sm-1.col-md-8.offset-md-2.col-lg-6.offset-lg-3
+    .card
+      .card-block
+        %h4.card-title
+          = @user.name
+          - if policy(@user).edit?
+            %small
+              %a{href: edit_user_path(@user), data: {target: "##{dom_id @user, 'edit-modal'}", toggle: 'modal'}} Edit
+        %dl.mb-0
+          %dt Email
+          %dd= @user.email
+          %dt Last activity
+          %dd
+            - if @user.last_activity_at
+              #{nice_date_time @user.last_activity_at, include_time: true} (#{time_ago_in_words @user.last_activity_at} ago)
+            - else
+              %span.text-muted Never
+          %dt Last login
+          %dd
+            - if @user.last_login_at
+              #{nice_date_time @user.last_login_at, include_time: true} (#{time_ago_in_words @user.last_login_at} ago)
+            - else
+              %span.text-muted Never
+          %dt Last logout
+          %dd
+            - if @user.last_logout_at
+              #{nice_date_time @user.last_logout_at, include_time: true} (#{time_ago_in_words @user.last_logout_at} ago)
+            - else
+              %span.text-muted Never
+
+        - if @user.disabled_at.nil?
+          %hr
+          %dl.mb-0
+            %dt
+              Roles
+              - if policy(Contexts::UserRole.new(@user)).edit?
+                %a{href: edit_user_roles_path(@user), class: 'font-weight-normal'}
+                  = @user.roles.empty? ? 'Add' : 'Edit'
+            %dd
+              - if @user.roles.empty?
+                %span.text-muted No roles assigned
+              - else
+                - for role in @user.roles
+                  %span.tag.tag-default.cursor-help{title: role.description}= role.name
+        %hr
+        %dl.mb-0
+          %dt
+            User Status
+            %a#disable-button-id{href: 'javascript:void(0);', class: 'font-weight-normal'}
+              = 'Edit'
+          %dd
+            - if @user.disabled_at.nil?
+              %span.tag.tag-default.cursor-help Enabled
+            - else
+              %span.tag.tag-default.cursor-help Disabled
+              %br
+              %strong Disable Reason:
+              %a{class: 'font-weight-normal', style: 'word-wrap: break-word;'}
+                = @user.disabled_reason
+
+          %div#disable-form-id(style="display: none;")
+            = simple_form_for @user, url: disable_user_path(@user) do |f|
+              - if !@user.disabled_at.nil?
+                = f.check_box :disabled_at, as: :boolean, id: 'disable-checkbox'
+                = f.label :disabled_at, 'Enable'
+                %br
+              - else
+                = f.check_box :disabled_at, as: :boolean, id: 'disable-checkbox'
+                = f.label :disabled_at, 'Disable'
+                = f.input :disabled_reason, label: 'Reason', wrapper_html: { class: 'required-field' }, input_html: { placeholder: 'Enter a reason', value: ''}
+              %p#reason-error.text-danger Reason cannot be blank
+              %button.btn.btn-primary#save-button-id{type: 'submit', data: {disable_with: 'Saving...'}}= fa_icon 'check', text: 'Save'
+              %button.btn.btn-secondary#cancel-button-id{type: 'button'} Cancel
+
+- if policy(@user).edit?
+  = render 'modal_form', action: 'edit', modal: true
+
+:coffeescript
+  document.addEventListener 'DOMContentLoaded', ->
+  disableButton = document.getElementById('disable-button-id')
+  disableForm = document.getElementById('disable-form-id')
+  cancelButton = document.getElementById('cancel-button-id')
+
+  if disableButton and disableForm
+    disableButton.addEventListener 'click', ->
+      disableForm.style.display = 'block'
+    cancelButton.addEventListener 'click', ->
+      disableForm.style.display = 'none'
+
+
+    # code for enable/disable save button
+    $(document).ready ->
+      initialCheckboxState = $('#disable-checkbox').prop('checked')
+      $('#save-button-id').prop('disabled', true)
+      $('#disable-checkbox').on 'change', ->
+        currentCheckboxState = $(this).prop('checked')
+        if currentCheckboxState != initialCheckboxState
+          $('#save-button-id').prop('disabled', false)
+        else
+          $('#save-button-id').prop('disabled', true)
+
+      # Use to show blank error reason message
+      $('#reason-error').hide()
+      $('#save-button-id').on 'click', (event) ->
+        reasonInput = $('#user_disabled_reason')
+        if reasonInput.val().trim() is ''
+          event.preventDefault()
+          $('#reason-error').show()
+      $('#cancel-button-id').on 'click', ->
+        $('#reason-error').hide()
+
+%style
+  :plain
+    .required-field label::after {
+      content: " *";
+      color: red;
+    }

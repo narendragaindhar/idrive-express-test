@@ -1,0 +1,10 @@
+-# <td> tag for emails
+- align = local_assigns.fetch :align, 'left'
+- valign = local_assigns.fetch :valign, 'top'
+- style = local_assigns.fetch :style, ''
+- additional_style = local_assigns.fetch :additional_style, ''
+- attrs = {align: align, valign: valign, style: "#{style} #{additional_style}"}
+- if local_assigns.has_key? :width
+  - attrs[:width] = width
+- additional_attrs = local_assigns.fetch :additional_attrs, {}
+%td{attrs, additional_attrs}= yield
