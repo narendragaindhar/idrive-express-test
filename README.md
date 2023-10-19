@@ -1,0 +1,270 @@
+# Express
+
+[![Workflows status for idrive-online-backup/express](https://github.com/idrive-online-backup/express/actions/workflows/ci-test.yml/badge.svg?branch=master)](https://github.com/idrive-online-backup/express/actions/workflows/ci-test.yml)
+
+The Express site is an internal site designed to handle a variety of IDrive & IBackup orders. It replaces the aging ticketing system and instead provides a stable, public API for creating orders, a full featured web app for managing and updating orders and the ability to notify customers of updates to orders.
+
+## Source code
+
+All of the Express source code is hosted on GitHub as opposed to our normal SVN server. Reason for this is because the app is hosted on [Heroku](https://dashboard.heroku.com/apps/idrive-express-production) and doing deploys from GitHub → Heroku is dead simple to setup.
+
+Checking out a copy of the repository is as simple as:
+
+```sh
+git checkout git@github.com:idrive-online-backup/express.git
+```
+
+**Note:** development with `git` is much different than `svn`. Make sure you understand the differences between then. I would suggest checking out the [git documentation website](https://git-scm.com/documentation) or even [GitHub's help pages](https://help.github.com/). Knowing when & how to branch is a very key skill here when developing new features for this app.
+
+## Getting started
+
+Once you have a copy of the source code checked out, we can start getting our machine ready for local development.
+
+#### External dependencies 
+
+You will need the following programs available on your machine to run the app. I recommend using `brew` to install all of these:
+
+* `mysql` along with the development headers
+* `redis`
+
+#### Heroku toolbelt
+
+First install the Heroku toolbelt which provide the command `heroku`. It can be installed from `brew` (recommended) or from [Heroku's website](https://toolbelt.heroku.com/). Learn how to use it and get authenticated from their excellent documentation.
+
+Next we need to configure the tool to support the application. Because there is two main app environments for the app on Heroku (namely "staging" and "production"), it helps to setup `heroku` to reference both of these so you can configure and manage them easier. In my setup, I like to create remote aliases to both apps so you can refer to them from both `heroku` and `git` by name. I took most of these steps from the [Heroku docs](https://devcenter.heroku.com/articles/multiple-environments) so check there if you have any issues. For me I used the following:
+
+```sh
+# creates a git remote called "staging" which will shortcut to the staging app
+heroku git:remote -a idrive-express-staging -r staging
+# creates a git remote called "production" which will shortcut to the production app
+heroku git:remote -a idrive-express-production -r production
+# sets the default application that will be chosen when none is named
+git config heroku.remote staging
+```
+
+In later documentation I will refer to the apps by the names set here. So when you run the command `git push production` it means you are pushing to the production application repository.
+
+#### Application bootstrap
+
+Because this is a Rails app, almost everything detailed in the [Rails documentation](http://guides.rubyonrails.org/) will apply for getting going. I recommend checking that out first before doing anything. However because this app is designed to be deployed with Heroku, running and managing the app locally should be done using the `heroku` command. Follow their documentation for [Getting Started with Ruby](https://devcenter.heroku.com/articles/getting-started-with-ruby) to get started quickly.
+
+A couple pro tips :
+
+* You will need a newer version of `ruby` to run the app. I recommend [RVM](https://rvm.io/) to install & manage newer versions of ruby. Not only do they stay out of the way of your system's installation but they also avoid the need for sudoing everything when installing [gems with gemsets](https://rvm.io/gemsets/basics), etc. on the machine.
+* You will need to create a `.env` file in the root of the project. There are several important environmental variables that will need to be set for the app to run. Easiest way to find these is to run `grep --recursive 'ENV' .`and set them in that file.
+
+In general, you will need to do the following to get started working with the application:
+
+```sh
+cd /application/root
+gem install bundler
+bundle install
+heroku local:run rails db:schema:load
+
+# run the tests
+heroku local:run rails spec
+# start the local webserver
+heroku local web
+```
+
+From there the real fun begins. For any questions or difficulties try:
+
+* Googling it. It will most likely solve your problem
+* [Making sure the local environment is setup](https://devcenter.heroku.com/articles/heroku-local)
+* Ask [Nic](mailto:nic@idrive.com). He's lazy but can probably help since he has most likely seen it before.
+
+## Development
+
+In general what you want to do when working on an issue works like this:
+
+```sh
+git checkout -b my-branch-name
+# create the branch remotely on github
+git push --set-upstream origin my-branch-name
+
+#
+# code changes happen here
+#
+
+# run all tests when done
+heroku local:run rails spec
+```
+
+Once we've completed our changes on our branch, open up a [pull request](https://github.com/idrive-online-backup/express/pulls) and do a code review. Once all your changes have been approved you can merge your changes into the `master` branch.
+
+## Heroku
+
+Hoo lot's to say here. Most important thing I can say before you start asking questions is to [read their docs](https://devcenter.heroku.com/categories/reference). Seriously. They are quite good and can tell you more than I can in a README.
+
+#### Logins
+
+All you have to do is have an existing member of Heroku invite you to be a collaborator on the express apps. Once that happens you will see them listed in your apps on the [Heroku dashboard](https://dashboard.heroku.com/apps).
+
+#### Apps
+
+Currently there are two apps on Heroku dedicated to the express site: `idrive-express-staging` and `idrive-express-production`.
+
+The **staging** version of the app is nearly identical in configuration & setup to the production version. The key differences here are with dyno type, deployment and config variables.
+
+This app runs on the entirely free dyno tier. This means among other things that it can go to sleep after inactivity as well as not being a very powerful server. Not too big of deal for a testing environment.
+
+This app will automatically deploy anything pushed to the `master` branch on GitHub for immediate testing. As soon as you push to GitHub it you can visit the Activity page on the Heroku dashboard and see what's happening as a deploy is happening. Additionally all database migrations will run automatically here so you will not experience downtime on a deploy here.
+
+Certain config variables here disable parts and features of the express site. Mainly this app will not try to update our sites with any order updates and it uses a free Sendgrid account to send notification emails.
+
+The **production** version runs on paid dynos and has paid add-ons running. All deployments and migrations here **must be done manually** so as not to disturb anything. It uses our main sendgrid account to send notifcation emails
+
+#### Databases
+
+The Express site runs on a standard `mysql` instance provided by the Heroku platform. The connection string to the database is provided by the add on itself and read into an environmental variable when starting. One other important thing to note here is all database connections with the app are done over an [SSL connection](https://www.cleardb.com/developers/ssl_connections) using an additional [buildpack](https://github.com/tagview/heroku-cleardb-env2ssl-buildpack). Read more from the links if you want to learn about it.
+
+### Deployment
+
+Before you do any deployments to Heroku ensure you have done proper local development, summited pull request, got it approved and made sure all pre-merge checks pass (CI, etc). You can then merge you changes into the `master` branch.
+
+#### Staging
+
+Deploying to staging is dead simple. There is a hook set up in the app where any push to the `master` branch on GitHub will automatically deploy here. In addition to this, all migration tasks will be run automatically. Once the changes have made it into `master`, you can check the [activity page](https://dashboard.heroku.com/apps/idrive-express-staging/activity) for the staging app and watch as the build proceeds. If all goes right you will see a log that "Build Succeeded" in the activity log. Then you can refresh the staging site to test out your changes.
+
+**You can safely deploy as many times as you want here without affecting the production app.**
+
+#### Production
+
+Once you have completed all of your changes and tested that they are working good, you can proceed to a production deployment. To do so:
+
+1. Bump the application version by running the appropriate `rails` task. This will make a new release, tag it and push the tag to github:
+  ```sh
+  git checkout master && git pull
+
+  # then one of these:  
+  heroku local:run rails release:major # for major releases (0.0.1 -> 1.0.0)
+  heroku local:run rails release:minor # for minor releases (0.0.1 -> 0.1.0)
+  heroku local:run rails release:patch # for patch releases (0.0.1 -> 0.0.2)
+  ```
+2. Draft a release in GitHub based on the new tag from the previous step by going to the [releases page](https://github.com/idrive-online-backup/express/releases) and selecting "Draft a new release". Name the title of the release "vX.X.X" corresponding to whatever version you are releasing. In the changes text area, I recommend doing `git diff` with the last release tag to get a list of all the changes and then summarizing them here.
+3. Once the release is done, verify the changes on the staging site
+4. To deploy to production, follow the steps below depending on the changes of the release. You can do either a "quick" release or a extended release which involves a bit of downtime.
+
+**Remember only deploy tags to production!** Let's do this proper and not deploy unknown changes. Only tags that correspond to a specific known good point should be deployed here.
+
+#### Quick release
+
+You will do these most of the time. Use this when there are no database migrations to run.
+
+```sh
+# get the latest changes from GitHub including the new tag you created
+git pull
+# "production" here is whatever you have named the Heroku remote
+# "vX.X.X" is the new tag name you created
+git push production vX.X.X:master
+#==> Counting objects: 49, done.
+#==> Delta compression using up to 4 threads.
+#==> Compressing objects: 100% (49/49), done.
+#==> Writing objects: 100% (49/49), 4.76 KiB | 0 bytes/s, done.
+#==> Total 49 (delta 40), reused 0 (delta 0)
+#==> remote: Compressing source files... done.
+#==> remote: Building source:
+# ...
+#==> remote: -----> Launching...
+#==> remote:        Released v36
+#==> remote:        https://idrive-express-production.herokuapp.com/ deployed to Heroku
+#==> remote:
+#==> remote: Verifying deploy.... done.
+#==> To https://git.heroku.com/idrive-express-production.git
+#==>    37580c2..d9a3b91  vX.X.X -> master
+```
+
+#### Extended release
+
+These releases require database migrations and will involve a bit of downtime while they run. Try to avoid these as much as possible. But to do it:
+
+```sh
+# puts site in maintenance mode
+heroku maintenance:on --app idrive-express-production
+
+# on the heroku dashboard set the following envvars:
+# to auto-run migrations:
+# EXPRESS_RUN_MIGRATIONS=1
+#
+# to seed the database from files in db/seeds/
+# EXPRESS_SEED='any seed files'
+
+# deploy the code to Heroku remote
+git push production vX.X.X:master
+
+# ...
+# deployment happens...
+# ...
+
+# restart is necessary for new methods to be available in models
+heroku restart --app idrive-express-production
+# put site live again
+heroku maintenance:off --app idrive-express-production
+```
+
+If all goes well you will have a new release on your hands!
+
+*Note: You may see this error at the end of the production build log:*
+
+```sh
+#==> fatal: protocol error: bad line length character: erro
+#==> fatal: The remote end hung up unexpectedly
+#==> error: failed to push some refs to 'https://git.heroku.com/idrive-express-production.git'
+```
+
+Just ignore it. I'm not sure why it happens. The release still worked.
+
+### Troubleshooting
+
+There are many options available for managing and troubleshooting Heroku apps. Most importantly, please [read the documentation](https://devcenter.heroku.com/categories/reference). Seriously. This will let you know the best way to do just about anything. Below is a just a brief summary of some of the quick ways to manage an app:
+
+#### Database access
+
+In general you should not access the app's database directly. It's bad practice for a rails app. Instead you should use the `rails console` to interact with the data:
+
+```sh
+heroku run rails console
+#==> Running rails console on idrive-express-staging... up, run.3821
+#==> Loading production environment (Rails 4.2.5)
+#==> irb(main):001:0>
+```
+
+Read up from the [rails documentation](http://guides.rubyonrails.org/command_line.html#rails-console) for how to interact with it. Additionally all database data is backed up nightly by the mysql add on itself. However all connections to it are done with a standard username/password over SSL if we wanted to we could configure a connection to the database remotely to do our own mysql dumps.
+
+#### Logs
+
+Since apps run on dynos and not actual servers there is no Apache logs to look at for the app. Instead, you can use the Heroku toolbelt to view and watch the logs as they happen:
+
+```sh
+heroku logs
+#==> 2016-02-04T19:15:52.082797+00:00 app[web.1]: Completed 200 OK in 307ms (Views: 73.5ms | ActiveRecord: 230.5ms)
+#==> 2016-02-04T19:16:02.833249+00:00 heroku[api]: Starting process with command `rails console` by nic@idrive.com
+#==> 2016-02-04T19:16:05.955439+00:00 heroku[run.6967]: Awaiting client
+#==> 2016-02-04T19:16:05.987892+00:00 heroku[run.6967]: Starting process with command `rails console`
+#==> 2016-02-04T19:16:06.262948+00:00 heroku[run.6967]: State changed from starting to up
+#==> 2016-02-04T19:29:52.143208+00:00 heroku[run.6967]: Process exited with status 0
+#==> 2016-02-04T19:29:52.126077+00:00 heroku[run.6967]: State changed from up to complete
+```
+
+You can also pass the `--tail` option to this command and view a continuous output from the logs.
+
+#### Papertrail
+
+This app also has the [Papertrail](https://papertrailapp.com/) add-on enabled for the app. This cloud based log reader app enables many additional features for viewing and sifting through log streams. You can setup saved searches as well as enable alerts for when various events happen in a log. This is general is more useful for after-the-fact analysis of things because the Heroku CLI is not good at tracking events way in the past.
+
+* [Staging logs](https://papertrailapp.com/systems/idrive-express-staging/events)
+* [Production logs](https://papertrailapp.com/systems/idrive-express-production/events)
+
+#### Processes
+
+There is no actual server to "go down" on Heroku. But you can view what is running and on what dynos by using the `ps` command.
+
+```sh
+heroku ps
+#==> === web (Free): bundle exec puma -C config/puma.rb
+#==> web.1: idle 2016/02/03 18:11:12 -0800 (~ 18h ago)
+#==>
+#==> === run: one-off processes
+#==> run.3821 (Free): up 2016/02/04 12:25:40 -0800 (~ 7m ago): rails console
+```
+You can also stop and start more processes using this command. See the [Heroku process documentation](https://devcenter.heroku.com/articles/procfile) for more details.
