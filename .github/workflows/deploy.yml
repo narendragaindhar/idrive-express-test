@@ -19,13 +19,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Get Latest Git Tag
+        id: git_tag
+        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+
       - name: "Deploy to ${{ github.event.inputs.environment }}"
         uses: akhileshns/heroku-deploy@v3.12.14
         with:
           heroku_api_key:  ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ github.event.inputs.environment == 'production' && secrets.HEROKU_PRODUCTION_APP_NAME || secrets.HEROKU_STAGING_APP_NAME }}
           heroku_email: 'narendra.gaindhar@idrive.com'
-          branch: 'master'
+          tag: ${{ steps.git_tag.outputs.tag }}
 
       - name: Slack Notification
         if: always()
