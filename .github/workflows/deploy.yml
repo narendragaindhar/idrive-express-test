@@ -28,7 +28,7 @@ jobs:
         run: |
           if [[ ${{ github.ref }} == refs/heads/* ]]; then
             echo "BRANCH"
-          else
+          elif [[ ${{ github.ref }} == refs/tags/* ]]; then
             echo "TAG"
           fi
 
