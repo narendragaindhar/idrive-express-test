@@ -12,10 +12,6 @@ on:
         options:
           - production
           - staging
-      tag:
-        description: 'Select Git Tag to Deploy'
-        type: choice
-        required: false
 jobs:
   deploy:
     runs-on: ubuntu-22.04
