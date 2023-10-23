@@ -28,7 +28,7 @@ jobs:
           if [[ ${{ github.ref }} == refs/heads/* ]]; then
             echo "BRANCH" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} == refs/tags/* ]]; then
-            echo "::set-output name=ref_type::TAG"
+            echo "TAG" >> $GITHUB_ENV
           fi
 
       - name: Use branch/tag data
