@@ -26,7 +26,7 @@ jobs:
         id: ref_type
         run: |
           if [[ ${{ github.ref }} == refs/heads/* ]]; then
-            echo "branch"
+            echo "BRANCH"
             echo "::set-output name=ref_flag::branch"
           fi
 
