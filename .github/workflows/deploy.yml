@@ -25,9 +25,8 @@ jobs:
       - name: Determine branch or tag
         id: ref_type
         run: |
-          if [[ ${{ github.ref }} == refs/heads/* ]]; then
-            echo ${{ github.ref }}
-          fi
+            ref_flag=${{ github.ref  }}
+            echo "Ref is a $ref_flag"
         
       - name: "Deploy to ${{ github.event.inputs.environment }}"
         uses: akhileshns/heroku-deploy@v3.12.14
