@@ -19,6 +19,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Fetch all tags
+        run: git fetch --tags
+
       - name: Determine branch or tag
         id: ref_type
         run: |
@@ -28,9 +31,11 @@ jobs:
             echo "TAG"
           fi
 
-      - name: Fetch all tags
-        run: git fetch --tags
-
+      - name: Use branch/tag data
+        run: |
+          ref_type="${{ steps.ref_type.outputs.stdout }}"
+          echo "This is a $ref_type reference."
+        
       - name: "Deploy to ${{ github.event.inputs.environment }}"
         uses: akhileshns/heroku-deploy@v3.12.14
         with:
