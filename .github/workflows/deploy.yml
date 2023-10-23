@@ -27,8 +27,6 @@ jobs:
         run: |
           if [[ ${{ github.ref }} == refs/heads/* ]]; then
             startsWith(github.ref, 'refs/heads/')
-          elif [[ ${{ github.ref }} == refs/tags/* ]]; then
-            echo "::set-env name=ref_type::TAG"
           fi
 
       - name: Use branch/tag data
