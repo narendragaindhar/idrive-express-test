@@ -26,14 +26,14 @@ jobs:
         id: ref_type
         run: |
           if [[ ${{ github.ref }} == refs/heads/* ]]; then
-            echo "::set-output name=ref_type::BRANCH"
+            echo "BRANCH" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} == refs/tags/* ]]; then
             echo "::set-output name=ref_type::TAG"
           fi
 
       - name: Use branch/tag data
         run: |
-          ref_type="${{ steps.ref_type.outputs.ref_types }}"
+          ref_type="${{ env.ref_type }}"
           echo "This is a $ref_type reference."
         
       - name: "Deploy to ${{ github.event.inputs.environment }}"
