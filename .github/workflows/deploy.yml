@@ -29,5 +29,5 @@ jobs:
           heroku_api_key:  ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ github.event.inputs.environment == 'production' && secrets.HEROKU_PRODUCTION_APP_NAME || secrets.HEROKU_STAGING_APP_NAME }}
           heroku_email: 'narendra.gaindhar@idrive.com'
-          # branch: ${{ startsWith(github.ref, 'refs/heads/') && 'master' || github.ref }}
-          branch: ${{github.ref}}
+          branch: ${{ startsWith(github.ref, 'refs/heads/') && 'master' || github.ref }}
+          #branch: ${{github.ref}}
