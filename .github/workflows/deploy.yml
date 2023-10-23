@@ -21,19 +21,6 @@ jobs:
 
       - name: Fetch all tags
         run: git fetch --tags
-
-      - name: Determine branch or tag
-        id: ref_type
-        run: |
-          if [[ ${{ github.ref }} == refs/heads/* ]]; then
-            echo "BRANCH"
-            echo "::set-output name=ref_flag::branch"
-          fi
-
-      - name: Use branch/tag data
-        run: |
-          ref_flag=${{ steps.ref_check.outputs.ref_flag }}
-          echo "Ref is a $ref_flag"
         
       - name: "Deploy to ${{ github.event.inputs.environment }}"
         uses: akhileshns/heroku-deploy@v3.12.14
@@ -41,7 +28,7 @@ jobs:
           heroku_api_key:  ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ github.event.inputs.environment == 'production' && secrets.HEROKU_PRODUCTION_APP_NAME || secrets.HEROKU_STAGING_APP_NAME }}
           heroku_email: 'narendra.gaindhar@idrive.com'
-          branch: ${{ github.ref == refs/heads/* && 'master' || github.ref }}
+          branch: ${{ github.ref }}
 
       - name: Slack Notification
         if: always()
