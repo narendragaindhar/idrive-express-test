@@ -33,7 +33,7 @@ jobs:
 
       - name: Use branch/tag data
         run: |
-          ref_type="${{ steps.ref_type.outputs.stdout }}"
+          ref_type="${{ steps.ref_type.outputs }}"
           echo "This is a $ref_type reference."
         
       - name: "Deploy to ${{ github.event.inputs.environment }}"
