@@ -21,6 +21,15 @@ jobs:
 
       - name: Fetch all tags
         run: git fetch --tags
+
+      - name: Determine branch or tag
+        id: ref_type
+        run: |
+          if [[ ${{ github.ref }} == refs/heads/* ]]; then
+            echo "BRANCH"
+          else 
+            echo "TAG"
+          fi
         
       - name: "Deploy to ${{ github.event.inputs.environment }}"
         uses: akhileshns/heroku-deploy@v3.12.14
@@ -28,4 +37,5 @@ jobs:
           heroku_api_key:  ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ github.event.inputs.environment == 'production' && secrets.HEROKU_PRODUCTION_APP_NAME || secrets.HEROKU_STAGING_APP_NAME }}
           heroku_email: 'narendra.gaindhar@idrive.com'
-          branch: ${{ ! startsWith(github.ref, 'refs/tags/') && github.ref || 'master' }}
+          branch: ${{ github.ref == refs/heads/* && 'master' || github.ref }}
+          #branch: ${{ ! startsWith(github.ref, 'refs/tags/') && github.ref || 'master' }}
