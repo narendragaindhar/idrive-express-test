@@ -28,6 +28,8 @@ jobs:
         run: |
           if [[ ${{ github.ref }} == refs/heads/* ]]; then
             echo "BRANCH"
+          else
+            echo "TAG"
           fi
 
       - name: Fetch all tags
