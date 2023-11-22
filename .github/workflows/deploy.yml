@@ -33,11 +33,12 @@ jobs:
         run: |
           if [ -n "${{ github.ref_type == 'tag' && github.ref  }}" ]; then
             tag=$(echo "${{ github.ref }}" | sed 's|refs/tags/||')
-            echo "Updating version file with tag: $tag"
+            git checkout $tag
             echo "$tag" > config/version
             git add config/version
             git commit -m "Bumping version to: $tag"
-            git push origin $tag
+            git tag -fa $tag -m "Bump tag version"
+            git push -f origin main --tags
           else
             echo "No tag specified. Skipping version file update."
           fi
