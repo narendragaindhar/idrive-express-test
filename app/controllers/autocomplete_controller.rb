@@ -17,6 +17,7 @@ class AutocompleteController < ApplicationController
 
   private
 
+  # render_autocomplete
   def render_autocomplete
     @records = @records.limit(params.fetch(:limit, LIMIT))
     @label_method ||= :label
