@@ -16,6 +16,9 @@ jobs:
   deploy:
     runs-on: ubuntu-22.04
     steps:
+      - env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -28,8 +31,6 @@ jobs:
           git config user.name "narendragaindhar"
 
       - name: Update Version File and Create Tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         run: |
           if [ -n "${{ github.ref_type == 'tag' && github.ref  }}" ]; then
             tag=$(echo "${{ github.ref }}" | sed 's|refs/tags/||')
