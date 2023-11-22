@@ -28,12 +28,13 @@ jobs:
 
       - name: Update Version File and Create Tag
         run: |
-          if [ -n "${{ github.event.inputs.tag }}" ]; then
-            echo "Updating version file with tag: ${{ github.event.inputs.tag }}"
-            echo "${{ github.event.inputs.tag }}" > config/version
+          if [ -n "${{ github.ref_type == 'tag' && github.ref  }}" ]; then
+            tag="${{ github.ref/refs\/tags\// }}"
+            echo "Updating version file with tag: $tag"
+            echo "$tag" > config/version
             git add config/version
-            git commit -m "Update version file for tag: ${{ github.event.inputs.tag }}"
-            git push origin "${{ github.event.inputs.tag }}"
+            git commit -m "Update version file for tag: $tag"
+            git push origin $tag
           else
             echo "No tag specified. Skipping version file update."
           fi
