@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+           token: ${{ secrets.TOKEN_GITHUB }}
 
       - name: Fetch all tags
         run: git fetch --tags
@@ -28,8 +30,6 @@ jobs:
           git config user.name "narendragaindhar"
 
       - name: Update Version File and Create Tag
-        env:
-         GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         run: |
           if [ -n "${{ github.ref_type == 'tag' && github.ref  }}" ]; then
             tag=$(echo "${{ github.ref }}" | sed 's|refs/tags/||')
