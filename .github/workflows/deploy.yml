@@ -1,4 +1,4 @@
-# This workflow will be triggered manually to deploy code in Heroku
+# This workflow will be triggered manually to deploy code in Heroku.
 
 name: Deploy Code to Heroku
 on:
