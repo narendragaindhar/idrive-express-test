@@ -28,6 +28,8 @@ jobs:
           git config user.name "narendragaindhar"
 
       - name: Update Version File and Create Tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         run: |
           if [ -n "${{ github.ref_type == 'tag' && github.ref  }}" ]; then
             tag=$(echo "${{ github.ref }}" | sed 's|refs/tags/||')
@@ -39,5 +41,3 @@ jobs:
           else
             echo "No tag specified. Skipping version file update."
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
