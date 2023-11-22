@@ -12,10 +12,6 @@ on:
         options:
           - production
           - staging
-      tag:
-        description: 'Select Git Tag to Deploy'
-        type: choice
-        required: false
 jobs:
   deploy:
     runs-on: ubuntu-22.04
@@ -25,6 +21,11 @@ jobs:
 
       - name: Fetch all tags
         run: git fetch --tags
+
+      - name: Set up Git
+        run: |
+          git config user.email "naren.gaindhar95@gmail.com"
+          git config user.name "narendragaindhar"
 
       - name: Update Version File and Create Tag
         run: |
