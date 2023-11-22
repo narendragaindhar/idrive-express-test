@@ -37,21 +37,3 @@ jobs:
           else
             echo "No tag specified. Skipping version file update."
           fi
-
-      - name: "Deploy to ${{ github.event.inputs.environment }}"
-        uses: akhileshns/heroku-deploy@v3.12.14
-        with:
-          heroku_api_key:  ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ github.event.inputs.environment == 'production' && secrets.HEROKU_PRODUCTION_APP_NAME || secrets.HEROKU_STAGING_APP_NAME }}
-          heroku_email: 'narendra.gaindhar@idrive.com'
-
-      - name: Slack Notification
-        if: always()
-        uses: slackapi/slack-github-action@v1.24.0
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        with:
-          payload: |
-            {
-              "text": "Deployment Status: ${{ job.status }}\nDeploy by: ${{ github.actor }}\nDeploy to: ${{ github.event.inputs.environment}}"
-            }
