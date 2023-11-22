@@ -29,7 +29,7 @@ jobs:
       - name: Update Version File and Create Tag
         run: |
           if [ -n "${{ github.ref_type == 'tag' && github.ref  }}" ]; then
-            tag="${{ github.ref/refs\/tags\// }}"
+            tag=$(echo "${{ github.ref }}" | sed 's|refs/tags/||')
             echo "Updating version file with tag: $tag"
             echo "$tag" > config/version
             git add config/version
