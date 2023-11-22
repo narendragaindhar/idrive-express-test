@@ -37,7 +37,8 @@ jobs:
             echo "$tag" > config/version
             git add config/version
             git commit -m "Update version file for deployment"
-            git push
+            git push origin main
+            git push origin &tag
           else
             echo "No tag specified. Skipping version file update."
           fi
