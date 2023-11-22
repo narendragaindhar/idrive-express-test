@@ -35,6 +35,7 @@ jobs:
             echo "$tag" > config/version
             git add config/version
             git commit -m "Bumping version to: $tag"
+            git push origin $tag
           else
             echo "No tag specified. Skipping version file update."
           fi
