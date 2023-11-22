@@ -38,10 +38,5 @@ jobs:
           else
             echo "No tag specified. Skipping version file update."
           fi
-
-      - name: Push latest version to tag
-        if: github.ref_type == 'tag' && github.ref
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.TOKEN_GITHUB }}
-          branch: github.ref
+        env:
+         GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
