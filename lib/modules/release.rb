@@ -44,7 +44,7 @@ module Release
   end
 
   def self.push(version)
-    run!('git push origin master')
+    run!('git push origin main')
     run!("git push origin '#{version.to_tag}'")
   end
 
