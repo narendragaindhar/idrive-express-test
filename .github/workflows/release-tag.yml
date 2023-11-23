@@ -16,7 +16,17 @@ on:
 jobs:
   release:
     runs-on: ubuntu-22.04
-
+    
+    env:
+      IBACKUP_UPDATE_API_TOKEN: 'xxxx'
+      IBACKUP_UPDATE_URL: 'https://www.ibackup.com/ibackup/static/updateOrderStatus'
+      IDRIVE_UPDATE_API_TOKEN: 'xxx'
+      IDRIVE_UPDATE_URL: 'https://www.idrive.com/idrive/static/updateOrderStatus'
+      IDRIVE360_UPDATE_API_TOKEN: 'xxxx'
+      IDRIVE360_UPDATE_URL: 'https://www.idrive.com/idrive/static/updateOrderStatus'
+      REDIS_URL: 'redis://xxxx'
+      API_TOKEN: 'xxxxx'
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
