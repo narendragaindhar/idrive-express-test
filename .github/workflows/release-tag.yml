@@ -12,17 +12,21 @@ on:
           - 'major'
           - 'minor'
           - 'patch'
-      tag_description:
-        description: 'Tag Description'
-        required: true
 
 jobs:
   release:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
+        with:
+           token: ${{ secrets.TOKEN_GITHUB }}
+
+      - name: Set up Git
+        run: |
+          git config user.email "naren.gaindhar95@gmail.com"
+          git config user.name "narendragaindhar"
 
       - name: Run Rake Release Task
         run: |
