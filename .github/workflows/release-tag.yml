@@ -24,6 +24,7 @@ jobs:
       IDRIVE_UPDATE_URL: 'xxxx'
       IDRIVE360_UPDATE_API_TOKEN: 'xxxx'
       IDRIVE360_UPDATE_URL: 'xxxx'
+      REDIS_URL: 'xxxx'
     
     steps:
       - name: Checkout code
