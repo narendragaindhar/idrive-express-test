@@ -19,13 +19,11 @@ jobs:
     
     env:
       IBACKUP_UPDATE_API_TOKEN: 'xxxx'
-      IBACKUP_UPDATE_URL: 'https://www.ibackup.com/ibackup/static/updateOrderStatus'
+      IBACKUP_UPDATE_URL: 'xxxx'
       IDRIVE_UPDATE_API_TOKEN: 'xxx'
-      IDRIVE_UPDATE_URL: 'https://www.idrive.com/idrive/static/updateOrderStatus'
+      IDRIVE_UPDATE_URL: 'xxxx'
       IDRIVE360_UPDATE_API_TOKEN: 'xxxx'
-      IDRIVE360_UPDATE_URL: 'https://www.idrive.com/idrive/static/updateOrderStatus'
-      REDIS_URL: 'redis://xxxx'
-      API_TOKEN: 'xxxxx'
+      IDRIVE360_UPDATE_URL: 'xxxx'
     
     steps:
       - name: Checkout code
