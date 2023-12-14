@@ -29,8 +29,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-           token: ${{ secrets.TOKEN_GITHUB }}
   
       - name: Set up Git
         run: |
