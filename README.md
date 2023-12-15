@@ -118,6 +118,8 @@ The **production** version runs on paid dynos and has paid add-ons running. All 
 
 The Express site runs on a standard `mysql` instance provided by the Heroku platform. The connection string to the database is provided by the add on itself and read into an environmental variable when starting. One other important thing to note here is all database connections with the app are done over an [SSL connection](https://www.cleardb.com/developers/ssl_connections) using an additional [buildpack](https://github.com/tagview/heroku-cleardb-env2ssl-buildpack). Read more from the links if you want to learn about it.
 
+### Tag release
+
 ### Deployment
 
 Before you do any deployments to Heroku ensure you have done proper local development, summited pull request, got it approved and made sure all pre-merge checks pass (CI, etc). You can then merge you changes into the `master` branch.
