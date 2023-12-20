@@ -22,7 +22,7 @@ jobs:
            token: ${{ secrets.TOKEN_GITHUB }}
 
       - name: Fetch all tags
-        run: git fetch --tags -f
+        run: git fetch --tags
 
       # - name: Set up Git
       #   run: |
