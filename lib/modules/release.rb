@@ -48,7 +48,7 @@ module Release
   end
 
   def self.tag(version)
-    run!("git tag -a '#{version.to_tag}' --message 'Release #{version.to_tag}' main")
+    run!("git tag --annotate '#{version.to_tag}' --message 'Release #{version.to_tag}' main")
   end
 
   def self.push_tag(version)
