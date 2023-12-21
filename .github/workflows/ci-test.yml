@@ -69,13 +69,13 @@ jobs:
       - name: Run RuboCop
         run: bundle exec rubocop
 
-      - name: Slack Notification
-        if: always()
-        uses: slackapi/slack-github-action@v1.24.0
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        with:
-          payload: |
-            {
-              "text": "Status: ${{ job.status }}\nStarted by: ${{ github.actor }}\nLink: ${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-            }
+      # - name: Slack Notification
+      #   if: always()
+      #   uses: slackapi/slack-github-action@v1.24.0
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #   with:
+      #     payload: |
+      #       {
+      #         "text": "Status: ${{ job.status }}\nStarted by: ${{ github.actor }}\nLink: ${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+      #       }
