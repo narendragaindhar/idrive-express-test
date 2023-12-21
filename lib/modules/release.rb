@@ -50,7 +50,8 @@ module Release
 
   def self.push(version)
     run!('git push origin main')
-    run!("git push origin '#{version.to_tag}'")
+    #run!("git push origin '#{version.to_tag}'")
+    run!("'git push origin main:refs/tags/#{version.to_tag}'")
   end
 
   def self.run!(command)
