@@ -16,7 +16,7 @@ module Release
     puts 'Commiting changes'
     commit version_file, version
     puts 'Tagging release'
-    tag version
+    #tag version
     puts 'Pushing to remote'
     push version
   end
