@@ -14,14 +14,12 @@ module Release
     update_version version_file_abs_path, version
     puts 'Commiting changes'
     commit version_file, version
-    puts 'push to main'
-    push_to_main
-    puts 'Tagging release'
-    tag version
+    # puts 'push to main'
+    # push_to_main
+    # puts 'Tagging release'
+    # tag version
     puts 'Pushing tag to remote'
-    push_tag version
-    puts 'Delete local tag'
-    delete_local_tag version
+    push version
   end
 
   def self.ensure_clean!(file)
@@ -51,13 +49,10 @@ module Release
     run!("git tag --annotate '#{version.to_tag}' --message 'Release #{version.to_tag}' main")
   end
 
-  def self.push_tag(version)
-    #run!('git push origin main')
-    run!("git push origin '#{version.to_tag}'")
-  end
-
-  def self.delete_local_tag(version)
-    run!("git tag -d '#{version.to_tag}'")
+  def self.push(version)
+    run!('git push origin main')
+    #run!("git push origin '#{version.to_tag}'")
+    run!"git push origin main:refs/tags/'#{version.to_tag}'"
   end
 
   def self.run!(command)
