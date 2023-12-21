@@ -12,13 +12,16 @@ module Release
     version = version.bump level
     puts "New version: #{version}"
     update_version version_file_abs_path, version
-    fetch_tag
     puts 'Commiting changes'
     commit version_file, version
+    puts 'push to main'
+    push_to_main
     puts 'Tagging release'
-    #tag version
-    puts 'Pushing to remote'
-    push version
+    tag version
+    puts 'Pushing tag to remote'
+    push_tag version
+    puts 'Delete local tag'
+    delete_local_tag version
   end
 
   def self.ensure_clean!(file)
@@ -37,21 +40,24 @@ module Release
   end
 
   def self.commit(version_file, version)
-    run!("git add '#{version_file}' && git commit --message 'Bumping version to #{version}'")
+    run!("git add -a '#{version_file}' && git commit --message 'Bumping version to #{version}'")
   end
   
-  def self.fetch_tag
-    run!('git fetch --tags')
+  def self.push_to_main
+    run!('git push origin main')
   end
 
   def self.tag(version)
-    run!("git tag '#{version.to_tag}' --message 'Release #{version.to_tag}' main")
+    run!("git tag -a '#{version.to_tag}' --message 'Release #{version.to_tag}' main")
   end
 
-  def self.push(version)
-    run!('git push origin main')
-    #run!("git push origin '#{version.to_tag}'")
-    run!("'git push origin main:refs/tags/#{version.to_tag}'")
+  def self.push_tag(version)
+    #run!('git push origin main')
+    run!("git push origin '#{version.to_tag}'")
+  end
+
+  def self.delete_local_tag(version)
+    run!("git tag -d '#{version.to_tag}'")
   end
 
   def self.run!(command)
