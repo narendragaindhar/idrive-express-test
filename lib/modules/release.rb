@@ -12,6 +12,7 @@ module Release
     version = version.bump level
     puts "New version: #{version}"
     update_version version_file_abs_path, version
+    fetch_tag
     puts 'Commiting changes'
     commit version_file, version
     puts 'Tagging release'
@@ -38,9 +39,13 @@ module Release
   def self.commit(version_file, version)
     run!("git add '#{version_file}' && git commit --message 'Bumping version to #{version}'")
   end
+  
+  def self.fetch_tag
+    run!('git fetch --tags')
+  end
 
   def self.tag(version)
-    run!("git tag --annotate '#{version.to_tag}' --message 'Release #{version.to_tag}' main")
+    run!("git tag '#{version.to_tag}' --message 'Release #{version.to_tag}' main")
   end
 
   def self.push(version)
