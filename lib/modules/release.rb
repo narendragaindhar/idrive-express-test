@@ -40,7 +40,7 @@ module Release
   end
 
   def self.commit(version_file, version)
-    run!("git add -a '#{version_file}' && git commit --message 'Bumping version to #{version}'")
+    run!("git add '#{version_file}' && git commit --message 'Bumping version to #{version}'")
   end
   
   def self.push_to_main
