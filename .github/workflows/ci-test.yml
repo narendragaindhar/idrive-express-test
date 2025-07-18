@@ -56,6 +56,9 @@ jobs:
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3
+      - name: Debug environment
+        run: |
+          echo "CI: $CI"
 
       - name: Database setup
         run: |
