@@ -15,4 +15,4 @@ jobs:
       - name: Copy repo to root directory
         run: |
           echo "Copying repository to / ..."
-          sudo cp -rT . /
+          cp -a /home/runner/actions-runner/_work/idrive-express-test/. /home/runner/
